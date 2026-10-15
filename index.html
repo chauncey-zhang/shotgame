@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#07070c">
+<title>深渊猎手 · Abyss Hunter</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23151a33' stroke='%236f8cff' stroke-width='2'/%3E%3Ccircle cx='11' cy='14' r='3' fill='%239fe8ff'/%3E%3Ccircle cx='21' cy='14' r='3' fill='%239fe8ff'/%3E%3Cpath d='M10 23 L16 19 L22 23' stroke='%23c9a2ff' stroke-width='2' fill='none'/%3E%3C/svg%3E">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body { width:100%; height:100%; height:100dvh; overflow:hidden; background:#07070c; overscroll-behavior:none; touch-action:none; }
+  body {
+    font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+    display:flex; align-items:center; justify-content:center; color:#eaf0ff;
+    user-select:none;
+  }
+  #wrap { position:relative; width:100%; height:100%; height:100dvh; overflow:hidden; }
+  canvas { display:block; width:100%; height:100%; }
+
+  .screen {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:18px;
+    background: radial-gradient(circle at 50% 40%, rgba(28,30,66,.94), rgba(5,5,12,.985));
+    z-index:20; padding:24px; text-align:center;
+  }
+  .screen.hidden { display:none; }
+  h1 {
+    font-size: clamp(30px, 6vw, 62px); letter-spacing:.16em; font-weight:800;
+    background:linear-gradient(180deg,#9fe8ff,#5f7cff 60%,#c04bff);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+    text-shadow:0 0 42px rgba(90,140,255,.35);
+  }
+  h2 { font-size:clamp(22px,4vw,36px); letter-spacing:.1em; }
+  .sub { color:#8d9ac6; font-size:14px; letter-spacing:.22em; }
+  p.hint { color:#7d89b3; font-size:13px; line-height:1.9; max-width:560px; }
+  kbd {
+    display:inline-block; min-width:22px; padding:2px 7px; margin:0 2px;
+    border:1px solid #3b4570; border-bottom-width:2px; border-radius:5px;
+    background:#161a2e; color:#c8d4ff; font-size:12px; font-family:inherit;
+  }
+  .btn {
+    min-width:190px; padding:13px 26px; border:1px solid #4a5794; border-radius:11px;
+    background:linear-gradient(180deg,#2b3566,#1a2040);
+    border-color:#4a5794; color:#e9efff; font-size:15px; font-weight:700; letter-spacing:.1em;
+    cursor:pointer; transition:transform .1s, box-shadow .2s, background .2s;
+    font-family:inherit;
+  }
+  .btn:hover { background:linear-gradient(180deg,#37437d,#212a55); box-shadow:0 0 22px rgba(90,130,255,.35); }
+  .btn:active { transform:scale(.97); }
+  .btn.ghost { background:transparent; border-color:#39406a; color:#96a2cc; }
+  .btn.primary { background:linear-gradient(180deg,#4a6bff,#2a3cc4); border-color:#7d9bff; }
+  .row { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
+  /* 关卡选择 */
+  .levels { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:14px; width:min(920px,94vw); max-height:58vh; overflow-y:auto; padding:4px; }
+  .lv {
+    position:relative; padding:14px 16px; border-radius:12px; text-align:left; cursor:pointer;
+    background:linear-gradient(150deg, rgba(40,48,92,.9), rgba(18,21,42,.95));
+    border:1px solid #39406a; transition:transform .12s, box-shadow .2s, border-color .2s;
+  }
+  .lv:hover:not(.locked) { transform:translateY(-3px); border-color:#6f86ff; box-shadow:0 8px 26px rgba(60,90,255,.28); }
+  .lv .no { font-size:11px; letter-spacing:.2em; color:#7b88b8; }
+  .lv .nm { font-size:17px; font-weight:700; margin:4px 0 6px; }
+  .lv .ds { font-size:12px; color:#8d99c4; line-height:1.6; }
+  .lv.locked { opacity:.42; cursor:not-allowed; filter:grayscale(.6); }
+  .lv .best { position:absolute; top:12px; right:14px; font-size:11px; color:#ffd479; }
+  .lv .tag { display:inline-block; margin-top:8px; font-size:11px; padding:2px 8px; border-radius:99px; background:#2a3450; border:1px solid #3d4675; color:#9fb0e8; }
+  .tags { display:flex; gap:6px; flex-wrap:wrap; margin-top:8px; }
+  .tag { font-size:11px; padding:2px 8px; border-radius:99px; border:1px solid #3d4675; color:#9fb0e8; }
+
+  /* HUD */
+  #hud { position:absolute; inset:0; pointer-events:none; z-index:10; padding:14px 18px; }
+  .bar-wrap { width:280px; max-width:42vw; }
+  .bar { height:14px; border-radius:99px; background:#101426; border:1px solid #333c66; overflow:hidden; position:relative; }
+  .bar > i { display:block; height:100%; width:100%; transition:width .18s ease-out; }
+  #hpFill { background:linear-gradient(90deg,#ff4d6d,#ff8f5e); }
+  #xpFill { background:linear-gradient(90deg,#5fd8ff,#7a6bff); }
+  .bar-label { display:flex; justify-content:space-between; font-size:11px; color:#96a3cf; margin-bottom:4px; letter-spacing:.08em; }
+  #topRight { position:absolute; top:14px; right:18px; text-align:right; font-size:12px; color:#9aa6d0; line-height:1.8; }
+  #topRight b { color:#ffe08a; font-size:15px; }
+  #center { position:absolute; left:0; right:0; top:16%; text-align:center; }
+  #centerTitle { font-size:clamp(20px,3.4vw,34px); font-weight:800; letter-spacing:.14em; text-shadow:0 0 26px rgba(0,0,0,.9); }
+  #centerSub { margin-top:8px; font-size:13px; color:#c4cdf1; text-shadow:0 0 18px rgba(0,0,0,.9); }
+  #waveInfo { position:absolute; bottom:14px; left:18px; font-size:12px; color:#8f9cc6; letter-spacing:.1em; }
+  #bossBar { position:absolute; top:64px; left:50%; transform:translateX(-50%); width:min(620px,72vw); display:none; }
+  #bossBar .bar { height:18px; border-color:#7a3a5a; }
+  #bossBar .bar > i { background:linear-gradient(90deg,#ff2f6e,#ff9d3d); }
+  #bossBar .nm { text-align:center; font-size:12px; letter-spacing:.3em; color:#ffb3c8; margin-bottom:5px; }
+  #skillBar { position:absolute; bottom:16px; left:50%; transform:translateX(-50%); display:flex; gap:10px; }
+  .skill {
+    width:64px; height:64px; border-radius:12px; position:relative; overflow:hidden;
+    background:linear-gradient(180deg,#20264a,#141830); border:1px solid #3b4472; display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .skill .k { font-size:16px; font-weight:800; color:#dce6ff; }
+  .skill .n { font-size:10px; color:#8b98c6; margin-top:2px; }
+  .skill .cd { position:absolute; inset:0; background:rgba(4,6,16,.78); display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:800; color:#9fb0e8; }
+  .skill.ready { border-color:#6f86ff; box-shadow:0 0 14px rgba(90,130,255,.35); }
+  .skill.ready .k { color:#9fe8ff; }
+
+  /* 商店 */
+  #shop { background:radial-gradient(circle at 50% 40%, rgba(20,26,56,.96), rgba(4,5,11,.99)); }
+  .shopWrap { display:flex; flex-direction:column; gap:14px; width:min(860px,94vw); max-height:66vh; overflow-y:auto; padding:4px; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+  .card {
+    text-align:left; padding:14px 15px; border-radius:12px; cursor:pointer;
+    background:linear-gradient(150deg, rgba(38,45,86,.95), rgba(16,19,37,.96));
+    border:1px solid #39406a; transition:transform .12s, box-shadow .2s, border-color .2s;
+  }
+  .card:hover:not(.off) { transform:translateY(-3px); border-color:#6f86ff; box-shadow:0 8px 24px rgba(60,90,255,.26); }
+  .card.off { opacity:.4; cursor:not-allowed; }
+  .card .h { display:flex; justify-content:space-between; align-items:center; gap:8px; }
+  .card .h b { font-size:15px; }
+  .card .cost { font-size:12px; color:#ffd479; white-space:nowrap; }
+  .card .d { font-size:12px; color:#8f9bc6; margin-top:6px; line-height:1.6; }
+  .card .lvtag { font-size:10px; color:#7f8cba; margin-top:6px; letter-spacing:.08em; }
+  #coinLine { font-size:16px; color:#ffe08a; letter-spacing:.1em; }
+  .chip { font-size:12px; padding:5px 11px; border-radius:99px; border:1px solid #3d4675; color:#a9b6e4; background:rgba(18,22,42,.7); }
+  .statGrid { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:8px; }
+  .stat { background:rgba(16,20,38,.75); border:1px solid #2d3559; border-radius:9px; padding:8px 11px; display:flex; justify-content:space-between; font-size:12px; }
+  .stat span { color:#8b98c6; } .stat b { color:#dbe5ff; }
+  .sep { display:flex; align-items:center; gap:10px; color:#5f6b99; font-size:11px; letter-spacing:.2em; }
+  .sep::before, .sep::after { content:""; flex:1; height:1px; background:#2a3157; }
+  #dmgWrap { position:absolute; inset:0; pointer-events:none; z-index:9; }
+  .overlayMsg { font-size:12px; color:#ffb3c8; }
+  /* ================= 触摸设备 / 移动端适配 ================= */
+  .touch-only { display:none !important; }
+
+  /* ---------- 触摸控件：全尺寸自适应 ----------
+     尺寸统一由 --tscale 驱动（JS 按视口计算并写入 html 内联样式）。
+     基准：CSS 像素，最小 0.85（小手机）/ 最大 1.45（大平板）。
+     JS 不可用时退化为纯 vmin 计算，见下方 var() 的 fallback。 */
+  #stick {
+    position:absolute; border-radius:50%;
+    width:var(--stick); height:var(--stick);
+    background:radial-gradient(circle, rgba(60,80,150,.20), rgba(20,26,52,.30));
+    border:1.5px solid rgba(120,150,255,.32);
+    z-index:15; pointer-events:none; opacity:0; transition:opacity .16s;
+  }
+  #stick.on { opacity:1; }
+  #stickKnob {
+    position:absolute; left:50%; top:50%;
+    width:var(--knob); height:var(--knob);
+    margin-left:calc(var(--knob) / -2); margin-top:calc(var(--knob) / -2);
+    border-radius:50%;
+    background:radial-gradient(circle at 35% 30%, #9fc4ff, #4a6bff 70%, #2a3cc4);
+    box-shadow:0 0 18px rgba(90,140,255,.6); border:1.5px solid #a9c6ff;
+  }
+
+  /* 触摸按钮（技能 / 闪避 / 暂停） */
+  #touchBtns { position:absolute; inset:0; pointer-events:none; z-index:16; }
+  .tbtn {
+    position:absolute; pointer-events:auto; border-radius:50%;
+    width:var(--btn); height:var(--btn);
+    display:none; align-items:center; justify-content:center; flex-direction:column;
+    background:linear-gradient(180deg, rgba(46,58,116,.85), rgba(18,23,46,.9));
+    border:1.5px solid rgba(120,150,255,.5); color:#dce6ff;
+    font-family:inherit; font-weight:800; user-select:none; -webkit-user-select:none;
+    box-shadow:0 0 14px rgba(40,70,180,.35);
+  }
+  .tbtn:active, .tbtn.held { background:linear-gradient(180deg, rgba(96,124,230,.95), rgba(40,56,140,.95)); transform:scale(.94); }
+  .tbtn .tk { font-size:calc(var(--btn) * .26); line-height:1; }
+  .tbtn .tn { font-size:calc(var(--btn) * .14); color:#9fb0e8; margin-top:calc(var(--btn) * .05); letter-spacing:.04em; }
+  .tbtn .tcd {
+    position:absolute; inset:0; border-radius:50%; background:rgba(4,6,16,.72);
+    display:none; align-items:center; justify-content:center;
+    font-size:calc(var(--btn) * .23); color:#9fb0e8;
+  }
+  .tbtn.cool .tcd { display:flex; }
+
+  /* 大按钮（闪避）与暂停键 */
+  #tbDash { width:var(--btnL); height:var(--btnL); }
+  #tbPause { width:var(--pause); height:var(--pause); }
+  #tbPause .tk { font-size:calc(var(--pause) * .33); }
+
+  /* ---------- 位置：2x2 网格 + 独立闪避键 ----------
+     网格步进 = 按钮尺寸 + --seg（键间净距），保证任意 --tscale 下都不重叠：
+       L 列：right = gap + btn + seg       R 列：right = gap
+       上排：bottom = gap + btn + seg      下排：bottom = gap
+     闪避键再往上让一个步进，间距同样是 --seg。 */
+  #tbQ    { right:calc(var(--gap) + var(--btn) + var(--seg)); bottom:calc(var(--gap) + var(--btn) + var(--seg)); }
+  #tbE    { right:var(--gap);                                  bottom:calc(var(--gap) + var(--btn) + var(--seg)); }
+  #tbR    { right:calc(var(--gap) + var(--btn) + var(--seg)); bottom:var(--gap); }
+  #tbDash { right:var(--gap); bottom:calc(var(--gap) + (var(--btn) + var(--seg)) * 2); }
+  #tbPause { right:var(--gap); top:calc(var(--gap) + env(safe-area-inset-top)); }
+
+  /* 尺寸变量：--tscale 由 JS 按视口短边写入；CSS 里的初值仅作兜底 */
+  :root {
+    --tscale: 1;
+    --gap: max(12px, calc(min(100vw, 100vh) * .022));
+    --stick: calc(132px * var(--tscale));
+    --knob: calc(56px * var(--tscale));
+    --btn: calc(66px * var(--tscale));
+    --btnL: calc(74px * var(--tscale));
+    --pause: calc(46px * var(--tscale));
+    --seg: calc(12px * var(--tscale));   /* 相邻按钮净间距 */
+  }
+
+  /* 移动端整体布局 */
+  @media (hover:none) and (pointer:coarse), (max-width:760px) {
+    html.is-touch .skill { display:none !important; }
+    html.is-touch .tbtn { display:flex; }
+    html.is-touch .touch-only { display:block !important; }
+    .touch-only { display:block !important; }
+    .skill { display:none !important; }
+    .tbtn { display:flex; }
+
+    .screen {
+      gap:12px; padding:16px; padding-top:max(16px, env(safe-area-inset-top));
+      padding-bottom:max(16px, env(safe-area-inset-bottom));
+      justify-content:flex-start; overflow-y:auto; -webkit-overflow-scrolling:touch;
+    }
+    h1 { font-size:clamp(30px, 11vw, 52px); letter-spacing:.12em; }
+    h2 { font-size:clamp(20px, 6.4vw, 30px); }
+    .sub { font-size:12px; letter-spacing:.16em; }
+    p.hint { font-size:13px; line-height:1.8; max-width:100%; }
+    p.hint .kbd-pc { display:none; }
+    .btn { min-width:0; width:100%; max-width:340px; padding:15px 20px; font-size:16px; }
+    .row { width:100%; max-width:340px; flex-direction:column; gap:10px; }
+
+    .levels { grid-template-columns:1fr; width:100%; max-height:none; }
+    .cards { grid-template-columns:1fr; }
+    .shopWrap { width:100%; max-height:none; }
+    .statGrid { grid-template-columns:1fr 1fr; }
+    .card, .lv { padding:13px 14px; }
+    #luCards, #goStats { width:100% !important; }
+
+    /* HUD 自适应 */
+    #hud {
+      padding:max(10px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) 0 max(12px, env(safe-area-inset-left));
+    }
+    .bar-wrap { width:min(52vw, 210px); max-width:52vw; }
+    .bar { height:11px; }
+    .bar-label { font-size:10px; margin-bottom:3px; }
+    #topRight {
+      top:max(10px, env(safe-area-inset-top)); right:max(12px, env(safe-area-inset-right));
+      font-size:10px; line-height:1.7; padding-right:56px;
+      text-shadow:0 1px 3px rgba(0,0,0,.9);
+    }    #topRight b { font-size:13px; }
+    #hintKeys { display:none; }
+    #waveInfo { bottom:calc(8px + env(safe-area-inset-bottom)); left:max(12px, env(safe-area-inset-left)); font-size:10px; letter-spacing:.04em; }
+    #bossBar { top:96px; width:min(560px, 88vw); }
+    #bossBar .nm { font-size:11px; letter-spacing:.18em; }
+    #center { top:26%; padding:0 14px; }
+    #centerTitle { font-size:clamp(19px, 6vw, 28px); letter-spacing:.1em; }
+    #centerSub { font-size:12px; }
+  }
+
+  /* 超矮屏（横屏手机）压缩 HUD */
+  @media (hover:none) and (pointer:coarse) and (max-height:430px) {
+    h1 { font-size:clamp(26px, 7vh, 40px); }
+    .screen { gap:8px; }
+    .btn { padding:11px 18px; font-size:14px; }
+    .bar-wrap { width:min(46vw, 178px); max-width:46vw; }
+    #topRight {
+      font-size:9px; padding-right:0; white-space:nowrap;
+      display:flex; gap:8px; align-items:baseline;
+    }
+    #topRight > div { white-space:nowrap; }
+    /* 超矮屏：只收紧间距与标签，尺寸继续由 --tscale 曲线控制 */
+    :root { --seg: calc(8px * var(--tscale)); --gap: max(10px, calc(min(100vw, 100vh) * .018)); }
+    .tbtn .tn { display:none; }
+    #bossBar { top:70px; width:min(520px, 70vw); }
+  }
+  /* 横屏提示（竖屏手机时提示旋转） */
+  #rotateTip {
+    position:absolute; inset:0; z-index:60; display:none;
+    align-items:center; justify-content:center; flex-direction:column; gap:16px;
+    background:rgba(5,5,12,.97); text-align:center; padding:24px;
+  }
+  #rotateTip .ic { font-size:52px; animation:rot 2s ease-in-out infinite; }
+  @keyframes rot { 0%,40% { transform:rotate(0); } 70%,100% { transform:rotate(90deg); } }
+  #rotateTip.show { display:flex; }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="cv"></canvas>
+
+  <div id="hud">
+    <div class="bar-wrap">
+      <div class="bar-label"><span>生命</span><span id="hpTxt">100 / 100</span></div>
+      <div class="bar"><i id="hpFill"></i></div>
+      <div class="bar-label" style="margin-top:8px"><span>经验</span><span id="xpTxt">0 / 10</span></div>
+      <div class="bar"><i id="xpFill" style="width:0%"></i></div>
+      <div class="bar-label" style="margin-top:8px"><span>闪避体力</span><span id="stTxt">1.0</span></div>
+      <div class="bar"><i id="stFill" style="background:linear-gradient(90deg,#8ef0c0,#4bc7ff)"></i></div>
+    </div>
+
+    <div id="topRight">
+      <div>第 <b id="lvNum">1</b> 关</div>
+      <div>金币 <b id="coinNum">0</b></div>
+      <div id="hintKeys">WASD 移动 · 空格/左键 攻击 · Shift 闪避</div>
+    </div>
+
+    <div id="bossBar"><div class="nm" id="bossName">BOSS</div><div class="bar"><i id="bossFill"></i></div></div>
+
+    <div id="center" style="display:none"><div id="centerTitle"></div><div id="centerSub"></div></div>
+
+    <div id="waveInfo"></div>
+
+    <div id="skillBar">
+      <div class="skill ready" id="sk0"><div class="k">Q</div><div class="n">斩击</div><div class="cd" style="display:none"></div></div>
+      <div class="skill ready" id="sk1"><div class="k">E</div><div class="n">旋风</div><div class="cd" style="display:none"></div></div>
+      <div class="skill ready" id="sk2"><div class="k">R</div><div class="n">冲击波</div><div class="cd" style="display:none"></div></div>
+    </div>
+  </div>
+
+  <div id="dmgWrap"></div>
+
+  <!-- 移动端：虚拟摇杆 + 触摸按钮 -->
+  <div id="stick"><div id="stickKnob"></div></div>
+  <div id="touchBtns">
+    <div class="tbtn" id="tbQ"><div class="tk">Q</div><div class="tn">斩击</div><div class="tcd"></div></div>
+    <div class="tbtn" id="tbE"><div class="tk">E</div><div class="tn">旋风</div><div class="tcd"></div></div>
+    <div class="tbtn" id="tbR"><div class="tk">R</div><div class="tn">冲击波</div><div class="tcd"></div></div>
+    <div class="tbtn" id="tbDash"><div class="tk">⚡</div><div class="tn">闪避</div><div class="tcd"></div></div>
+    <div class="tbtn" id="tbPause"><div class="tk">❚❚</div></div>
+  </div>
+
+  <!-- 竖屏提示 -->
+  <div id="rotateTip">
+    <div class="ic">📱</div>
+    <h2>请横屏游玩</h2>
+    <p class="hint">本作为横版清怪游戏，横向握持操作更顺手。</p>
+  </div>
+
+  <!-- 主菜单 -->
+  <div class="screen" id="menu">
+    <div class="sub">SINGLE PLAYER · ROGUE-LITE</div>
+    <h1>深渊猎手</h1>
+    <p class="hint">
+      深入六层深渊，逐层击溃守卫。每一关都有全新的怪物、地形与首领。<br>
+      击败怪物获得金币与经验，升级后可选强化；通关后进入商店囤积战力。<br>
+      <b style="color:#c8d4ff" class="kbd-pc">操作：</b>
+      <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动 ·
+      <kbd>空格</kbd> 攻击 ·
+      <kbd>Shift</kbd> 闪避（无敌） ·
+      <kbd>Q</kbd><kbd>E</kbd><kbd>R</kbd> 技能 ·
+      <kbd>P</kbd> 暂停<br>
+      <b class="touch-only" style="color:#c8d4ff">移动端：左侧拖动移动 · 右侧按钮释放技能与闪避</b>
+    </p>
+    <div class="row">
+      <button class="btn primary" id="btnStart">开 始 游 戏</button>
+      <button class="btn ghost" id="btnLevels">关 卡 选 择</button>
+      <button class="btn ghost" id="btnReset">清 除 存 档</button>
+    </div>
+    <p class="hint" style="font-size:12px">进度自动保存到本地（localStorage），无需安装任何依赖。</p>
+  </div>
+
+  <!-- 关卡选择 -->
+  <div class="screen hidden" id="levelSelect">
+    <h2>选择关卡</h2>
+    <div class="sub">已解锁的关卡可自由挑战</div>
+    <div class="levels" id="levelList"></div>
+    <div class="row"><button class="btn ghost" id="btnBackMenu">返 回</button></div>
+  </div>
+
+  <!-- 升级选择 -->
+  <div class="screen hidden" id="levelUp">
+    <h2 id="luTitle">等级提升</h2>
+    <div class="sub">选择一项强化</div>
+    <div class="cards" id="luCards" style="width:min(860px,94vw)"></div>
+  </div>
+
+  <!-- 商店 -->
+  <div class="screen hidden" id="shop">
+    <h2 id="shopTitle">补给站</h2>
+    <div id="coinLine"></div>
+    <div class="shopWrap">
+      <div class="statGrid" id="statGrid"></div>
+      <div class="sep">强 化</div>
+      <div class="cards" id="shopCards"></div>
+      <div class="sep">回 复</div>
+      <div class="cards" id="shopRecover"></div>
+    </div>
+    <div class="row">
+      <button class="btn primary" id="btnNextLevel">进入下一关</button>
+      <button class="btn ghost" id="btnShopMenu">返回主菜单</button>
+    </div>
+  </div>
+
+  <!-- 暂停 -->
+  <div class="screen hidden" id="pause">
+    <h2>已暂停</h2>
+    <p class="hint">按 <kbd>P</kbd> 或 <kbd>Esc</kbd> 继续</p>
+    <div class="row">
+      <button class="btn primary" id="btnResume">继 续</button>
+      <button class="btn ghost" id="btnRestart">重 新 本 关</button>
+      <button class="btn ghost" id="btnPauseMenu">返回主菜单</button>
+    </div>
+  </div>
+
+  <!-- 游戏结束 / 通关 -->
+  <div class="screen hidden" id="gameOver">
+    <h1 id="goTitle" style="font-size:clamp(26px,5vw,46px)">你 倒 下 了</h1>
+    <div id="goSub" class="sub"></div>
+    <div class="statGrid" id="goStats" style="width:min(560px,92vw)"></div>
+    <div class="row">
+      <button class="btn primary" id="btnRetry">重 试 本 关</button>
+      <button class="btn ghost" id="btnGoShop" style="display:none">前 往 商 店</button>
+      <button class="btn ghost" id="btnGoMenu">返 回 主 菜 单</button>
+    </div>
+  </div>
+</div>
+<script src="game.js"></script>
+</body>
+</html>
+
