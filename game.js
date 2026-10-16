@@ -22,38 +22,63 @@ const LEVELS = [
   { id:1, name:'枯骨荒原', desc:'最低层的坟场，骷髅在风沙中游荡。', tags:['新手','骷髅','近战'],
     bg:['#1a1730','#2b2148'], accent:'#c8a2ff',
     enemyPool:['skeleton','skeleton','slime'], waves:4,
-    waveSize:(w)=>3+w*2, hpMul:1.0, dmgMul:1.0, speedMul:1.0,
+    waveSize:(w)=>7+w*3, hpMul:.55, dmgMul:.18, speedMul:.62,
     boss:{ type:'boneKing', name:'骸骨之王' } },
 
   { id:2, name:'幽绿水道', desc:'腐水没膝，粘稠的东西在暗处蠕动。', tags:['远程','腐蚀','分散'],
     bg:['#0d2028','#14403c'], accent:'#6ff0d0',
     enemyPool:['slime','spitter','slime','bat'], waves:4,
-    waveSize:(w)=>4+w*2, hpMul:1.18, dmgMul:1.12, speedMul:1.05,
+    waveSize:(w)=>9+w*3, hpMul:.66, dmgMul:.21, speedMul:.66,
     boss:{ type:'slimeQueen', name:'腐沼母巢' } },
 
-  { id:3, name:'霜封回廊', desc:'寒冰拖慢脚步，冷酷的法师藏于雪幕。', tags:['减速','法师','瞬移'],
+  { id:3, name:'流沙古墓', desc:'黄沙之下埋着会动的石棺，风里全是干燥的骨粉。', tags:['沙虫','突进','包围'],
+    bg:['#2a2213','#54401f'], accent:'#ffd479',
+    enemyPool:['skeleton','bat','bomber','skeleton'], waves:4,
+    waveSize:(w)=>10+w*3, hpMul:.76, dmgMul:.24, speedMul:.68,
+    boss:{ type:'sandWyrm', name:'噬沙巨虫' } },
+
+  { id:4, name:'霜封回廊', desc:'寒冰拖慢脚步，冷酷的法师藏于雪幕。', tags:['减速','法师','瞬移'],
     bg:['#101c33','#26456e'], accent:'#9fe8ff',
     enemyPool:['wraith','spitter','skeleton','wraith'], waves:5,
-    waveSize:(w)=>5+w*2, hpMul:1.38, dmgMul:1.26, speedMul:1.08,
+    waveSize:(w)=>11+w*3, hpMul:.88, dmgMul:.27, speedMul:.70,
     boss:{ type:'frostLord', name:'霜噬领主' } },
 
-  { id:4, name:'熔核熔炉', desc:'岩浆翻涌，火元素在铁砧上重铸自己。', tags:['高伤','爆炸','冲锋'],
+  { id:5, name:'雷鸣穹顶', desc:'乌云压得很低，雷光顺着金属骨架一路爬到你脚下。', tags:['闪电','连锁','高机动'],
+    bg:['#151a2e','#33305c'], accent:'#a8c8ff',
+    enemyPool:['wraith','imp','spitter','bat'], waves:5,
+    waveSize:(w)=>12+w*3, hpMul:1.0, dmgMul:.30, speedMul:.72,
+    boss:{ type:'stormHerald', name:'雷暴先驱' } },
+
+  { id:6, name:'熔核熔炉', desc:'岩浆翻涌，火元素在铁砧上重铸自己。', tags:['高伤','爆炸','冲锋'],
     bg:['#2a0f12','#53211a'], accent:'#ff9a5c',
-    enemyPool:['imp','imp','bomber','skeleton'], waves:5,
-    waveSize:(w)=>6+w*2, hpMul:1.6, dmgMul:1.42, speedMul:1.14,
+    enemyPool:['imp','imp','bomber','skeleton'], waves:6,
+    waveSize:(w)=>13+w*3, hpMul:1.14, dmgMul:.33, speedMul:.74,
     boss:{ type:'magmaTitan', name:'熔核泰坦' } },
 
-  { id:5, name:'血色钟楼', desc:'钟声一响，血影便从镜中爬出。', tags:['召唤','瞬移','群战'],
+  { id:7, name:'磐石圣殿', desc:'古老的守卫从墙壁里站起，把整座殿都变成它的躯干。', tags:['重甲','震地','召唤'],
+    bg:['#1d2119','#3d4432'], accent:'#c9d6a0',
+    enemyPool:['slime','imp','summoner','bomber'], waves:6,
+    waveSize:(w)=>14+w*3, hpMul:1.28, dmgMul:.36, speedMul:.76,
+    boss:{ type:'stoneWarden', name:'磐石守卫' } },
+
+  { id:8, name:'血色钟楼', desc:'钟声一响，血影便从镜中爬出。', tags:['召唤','瞬移','群战'],
     bg:['#240a1e','#4a1136'], accent:'#ff7ec1',
     enemyPool:['wraith','bat','imp','summoner'], waves:6,
-    waveSize:(w)=>6+w*2, hpMul:1.9, dmgMul:1.6, speedMul:1.2,
+    waveSize:(w)=>15+w*3, hpMul:1.42, dmgMul:.39, speedMul:.78,
     boss:{ type:'bloodCountess', name:'血影伯爵夫人' } },
 
-  { id:6, name:'深渊王座', desc:'一切阴影的源头，它已在王座上等你很久。', tags:['终局','多阶段','精英'],
+  { id:9, name:'虚空镜廊', desc:'无数面镜子复制了你的动作，也复制了你打不过的东西。', tags:['镜像','传送','狂暴'],
+    bg:['#0d0a1d','#241a4a'], accent:'#7ff0ff',
+    enemyPool:['wraith','summoner','imp','spitter','bomber'], waves:6,
+    waveSize:(w)=>16+w*3, hpMul:1.56, dmgMul:.42, speedMul:.80,
+    boss:{ type:'voidMirror', name:'虚空镜灵' } },
+
+  { id:10, name:'深渊王座', desc:'一切阴影的源头，它已在王座上等你很久。', tags:['终局','多阶段','精英'],
     bg:['#0a0715','#1e0f3d'], accent:'#b98cff',
-    enemyPool:['wraith','imp','bomber','summoner','spitter'], waves:6,
-    waveSize:(w)=>7+w*2, hpMul:2.25, dmgMul:1.85, speedMul:1.26,
+    enemyPool:['wraith','imp','bomber','summoner','spitter'], waves:7,
+    waveSize:(w)=>17+w*3, hpMul:1.70, dmgMul:.45, speedMul:.82,
     boss:{ type:'abyssKing', name:'深渊之王' } }
+
 ];
 
 /* ---------------- 怪物定义 ----------------
@@ -96,6 +121,31 @@ const BOSS_TYPES = {
       { until:.5,   shots:13, spawn:'bomber', spawnCd:4.0, spawnCount:3, dash:true,  explode:true },
       { until:-1,   shots:17, spawn:'imp',    spawnCd:3.2, spawnCount:4, dash:true,  explode:true, ring:true } ] },
 
+  sandWyrm:{ name:'噬沙巨虫', hp:1250, dmg:21, speed:58, radius:42, xp:200, coin:135,
+    color:'#ffd479', color2:'#7a5218', shape:'wyrm', phases:[
+      { until:1,    shots:5,  spawn:'bat',      spawnCd:5.4, spawnCount:3, dash:false, lob:true },
+      { until:.55,  shots:9,  spawn:'skeleton', spawnCd:4.4, spawnCount:4, dash:true,  lob:true },
+      { until:-1,   shots:13, spawn:'bat',      spawnCd:3.4, spawnCount:5, dash:true,  lob:true, ring:true } ] },
+
+  stormHerald:{ name:'雷暴先驱', hp:2400, dmg:27, speed:82, radius:38, xp:360, coin:235,
+    color:'#a8c8ff', color2:'#2a3a86', shape:'herald', phases:[
+      { until:1,    shots:8,  spawn:'wraith', spawnCd:5.0, spawnCount:3, dash:false, teleport:true },
+      { until:.5,   shots:12, spawn:'imp',    spawnCd:4.0, spawnCount:4, dash:true,  teleport:true },
+      { until:-1,   shots:16, spawn:'bat',    spawnCd:3.2, spawnCount:6, dash:true,  teleport:true, ring:true, rage:true } ] },
+
+  stoneWarden:{ name:'磐石守卫', hp:3400, dmg:32, speed:54, radius:48, xp:480, coin:310,
+    color:'#c9d6a0', color2:'#4b5535', shape:'warden', phases:[
+      { until:1,    shots:8,  spawn:'slime',    spawnCd:5.0, spawnCount:4, dash:false, ring:true },
+      { until:.5,   shots:12, spawn:'bomber',   spawnCd:4.0, spawnCount:3, dash:false, ring:true, explode:true },
+      { until:-1,   shots:16, spawn:'summoner', spawnCd:3.2, spawnCount:3, dash:true,  ring:true, explode:true, heal:true } ] },
+
+  voidMirror:{ name:'虚空镜灵', hp:4600, dmg:38, speed:88, radius:40, xp:700, coin:450,
+    color:'#7ff0ff', color2:'#123a6b', shape:'mirror', phases:[
+      { until:1,    shots:11, spawn:'wraith',   spawnCd:4.2, spawnCount:4, dash:true, teleport:true },
+      { until:.66,  shots:15, spawn:'summoner', spawnCd:3.8, spawnCount:3, dash:true, teleport:true, ring:true },
+      { until:.33,  shots:19, spawn:'imp',      spawnCd:3.2, spawnCount:5, dash:true, teleport:true, ring:true, rage:true },
+      { until:-1,   shots:24, spawn:'bomber',   spawnCd:2.8, spawnCount:5, dash:true, teleport:true, ring:true, rage:true, heal:true } ] },
+
   bloodCountess:{ name:'血影伯爵夫人', hp:3800, dmg:34, speed:86, radius:36, xp:540, coin:340,
     color:'#ff9ecd', color2:'#7d1247', shape:'countess', phases:[
       { until:1,    shots:10, spawn:'bat',      spawnCd:4.4, spawnCount:4, dash:true, teleport:true },
@@ -110,7 +160,7 @@ const BOSS_TYPES = {
       { until:-1,    shots:26, spawn:'bomber',   spawnCd:2.8, spawnCount:5, dash:true, ring:true, teleport:true, heal:true, rage:true } ] }
 };
 
-﻿/* ---------------- 升级池（每次升级三选一） ---------------- */
+/* ---------------- 升级池（每次升级三选一） ---------------- */
 const UPGRADES = [
   { id:'dmg',       name:'锋刃',   max:99, desc:'攻击力 +14%',              apply:p=>p.dmgMul*=1.14 },
   { id:'aspd',      name:'疾攻',   max:8,  desc:'攻击速度 +12%',            apply:p=>p.atkSpeedMul*=1.12 },
@@ -120,12 +170,12 @@ const UPGRADES = [
   { id:'critdmg',   name:'致命',   max:99, desc:'暴击伤害 +30%',            apply:p=>p.critMul+=.30 },
   { id:'regen',     name:'再生',   max:8,  desc:'每秒回复 +0.6 生命',       apply:p=>p.regen+=.6 },
   { id:'dash',      name:'瞬步',   max:5,  desc:'闪避冷却 -15%',            apply:p=>p.dashCdMax*=.85 },
-  { id:'radius',    name:'长兵',   max:6,  desc:'攻击范围 +12%',            apply:p=>p.atkRange*=1.12 },
-  { id:'pierce',    name:'穿透',   max:4,  desc:'每次挥击可多命中 1 个目标', apply:p=>p.pierce+=1 },
+  { id:'radius',    name:'长兵',   max:6,  desc:'攻击判定 +12%',            apply:p=>p.atkRange*=1.12 },
+  { id:'pierce',    name:'穿透',   max:4,  desc:'挥击多命中 1 个；追猎命中后溅射 1 道', apply:p=>p.pierce+=1 },
   { id:'lifesteal', name:'吸血',   max:8,  desc:'每次命中回复 0.6 生命',     apply:p=>p.lifesteal+=.6 },
   { id:'thorn',     name:'尖刺',   max:8,  desc:'反伤 +6',                  apply:p=>p.thorn+=6 },
   { id:'cdr',       name:'专注',   max:8,  desc:'技能冷却 -12%',            apply:p=>p.cdr*=.88 },
-  { id:'proj',      name:'裂空',   max:3,  desc:'冲击波多发射 1 道',       apply:p=>p.projCount+=1 },
+  { id:'proj',      name:'裂空',   max:3,  desc:'追猎伤害 +35%',           apply:p=>p.projCount+=1 },
   { id:'pickup',    name:'磁力',   max:5,  desc:'拾取范围 +35%',            apply:p=>p.pickupRange*=1.35 },
   { id:'shield',    name:'护盾',   max:3,  desc:'每关开始多 1 层护盾',     apply:p=>p.shieldStart+=1 }
 ];
@@ -144,7 +194,7 @@ const SHOP_ITEMS = [
   { id:'s_regen',    name:'再生强化', base:110, grow:1.6,  desc:'每秒回复 +0.8 生命' },
   { id:'s_thorn',    name:'尖刺强化', base:90,  grow:1.55, desc:'反伤 +8' },
   { id:'s_lifesteal',name:'吸血强化', base:120, grow:1.6,  desc:'每次命中回复 +0.8 生命' },
-  { id:'s_range',    name:'长兵强化', base:90,  grow:1.55, desc:'攻击范围 +10%' }
+  { id:'s_range',    name:'长兵强化', base:90,  grow:1.55, desc:'攻击判定 +10%' }
 ];
 
 /* ---------------- 画布与自适应 ---------------- */
@@ -153,16 +203,24 @@ const ctx = cv.getContext('2d');
 let W = 0, H = 0, DPR = 1;
 function resize() {
   DPR = Math.min(window.devicePixelRatio || 1, 2);
-  W = cv.clientWidth || window.innerWidth;
-  H = cv.clientHeight || window.innerHeight;
-  cv.width = Math.floor(W * DPR);
-  cv.height = Math.floor(H * DPR);
+  /* 取 #wrap 的实际渲染尺寸：竖屏兜底旋转时 #wrap 已被换成横屏幅面，
+     用它才能拿到与显示一致的逻辑视口，避免主角/怪物被画到可视区外。 */
+  const wrap = document.getElementById('wrap');
+  const rw = wrap && wrap.clientWidth ? wrap.clientWidth : 0;
+  const rh = wrap && wrap.clientHeight ? wrap.clientHeight : 0;
+  W = rw || cv.clientWidth || window.innerWidth;
+  H = rh || cv.clientHeight || window.innerHeight;
+  /* 兜底旋转下 #wrap 的宽高来自 vh/vw，个别浏览器 clientWidth 会滞后，
+     用 window 尺寸交叉校正一次 */
+  if (!W || !H) { W = window.innerWidth; H = window.innerHeight; }
+  cv.width = Math.max(1, Math.floor(W * DPR));
+  cv.height = Math.max(1, Math.floor(H * DPR));
   ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
 }
 window.addEventListener('resize', resize);
 
 const SAVE_KEY = 'abyss_hunter_save_v1';
-const INVULN_SEC = 0.55;
+const INVULN_SEC = 1.0;
 
 const state = {
   mode: 'menu', levelIndex: 0, player: null,
@@ -171,7 +229,7 @@ const state = {
   boss: null, bossActive: false, bossDone: false,
   time: 0, shakeT: 0, shakeMag: 0, hitStop: 0, announceT: 0,
   kills: 0, runCoins: 0, levelUpQueue: 0,
-  eliteWave: false, shieldGiven: false,
+  eliteWave: false, shieldGiven: false, relaxProtectT: 0,
   save: null
 };
 
@@ -196,7 +254,8 @@ const mouse = { x: 0, y: 0, down: false };
 const touch = {
   active: false, stickId: null,
   move: { x: 0, y: 0 },
-  ox: 0, oy: 0
+  ox: 0, oy: 0,
+  holding: Object.create(null),   // 当前按住攻击的手指数（用于 按住=回旋斩）
 };
 /* 触摸控件自适应当前视口。
    思路：在“短边 320px（小手机）”到“短边 1100px（大平板）”之间做平滑映射，
@@ -267,7 +326,8 @@ function onTouchStart(e) {
   if (!touch.active || state.mode !== 'playing') return;
   const r = cv.getBoundingClientRect();
   for (const t of e.changedTouches) {
-    const x = t.clientX - r.left, y = t.clientY - r.top;
+    const pt = mapPointer(t.clientX - r.left, t.clientY - r.top);
+    const x = pt.x, y = pt.y;
     if (x < W * .5) {
       if (touch.stickId !== null) continue;
       touch.stickId = t.identifier;
@@ -275,6 +335,7 @@ function onTouchStart(e) {
       stickShow(x, y);
     } else {
       mouse.x = x; mouse.y = y; mouse.down = true;
+      touch.holding[t.identifier] = true;
     }
   }
   e.preventDefault();
@@ -283,9 +344,13 @@ function onTouchMove(e) {
   if (!touch.active || state.mode !== 'playing') return;
   const r = cv.getBoundingClientRect();
   for (const t of e.changedTouches) {
-    const x = t.clientX - r.left, y = t.clientY - r.top;
+    const pt = mapPointer(t.clientX - r.left, t.clientY - r.top);
+    const x = pt.x, y = pt.y;
     if (t.identifier === touch.stickId) stickUpdate(x - touch.ox, y - touch.oy);
-    else { mouse.x = x; mouse.y = y; mouse.down = true; }
+    else {
+      mouse.x = x; mouse.y = y; mouse.down = true;
+      touch.holding[t.identifier] = true;
+    }
   }
   e.preventDefault();
 }
@@ -297,7 +362,8 @@ function onTouchEnd(e) {
       touch.move.x = 0; touch.move.y = 0;
       stickHide();
     } else {
-      mouse.down = false;
+      delete touch.holding[t.identifier];
+      mouse.down = Object.keys(touch.holding).length > 0;
     }
   }
 }
@@ -351,25 +417,40 @@ function touchMoveVector() {
   return touch.move;
 }
 
-/* 竖屏提示：触摸设备 + 竖屏时覆盖显示，提示横屏游玩 */
-let rotateLocked = false;
-function updateRotateTip() {
-  if (!touch.active) return;
-  const tip = document.getElementById('rotateTip');
-  if (!tip) return;
+/* 默认横屏：能锁就锁（Screen Orientation API），锁不了就用 CSS 兜底旋转 90 度，
+   竖屏设备也直接以横屏画面呈现，不需要玩家自己切换方向。 */
+function applyOrientation() {
   const portrait = window.innerHeight > window.innerWidth;
-  const narrow = Math.min(window.innerWidth, window.innerHeight) <= 560;
-  const show = portrait && narrow;
-  tip.classList.toggle('show', show);
-  if (show && state.mode === 'playing') { state.mode = 'pause'; showScreen('pause'); rotateLocked = true; }
-  else if (!show && rotateLocked) {
-    rotateLocked = false;
-    if (state.mode === 'pause') showScreen('pause');
+  const changed = document.documentElement.classList.contains('portrait-fallback') !== portrait;
+  document.documentElement.classList.toggle('portrait-fallback', portrait);
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('landscape').catch(() => {});   // 需全屏/受信任环境，失败则静默兜底
+  }
+  /* 兜底旋转改变了 #wrap 的宽高幅面，必须重算画布尺寸与逻辑视口，
+     否则 W/H 仍是竖屏值，主角与怪物会被绘制到可视区之外。 */
+  resize();
+  if (changed) {
+    /* 布局（vh/vw 解析）在本帧后稳定，下一帧再校正一次尺寸 */
+    requestAnimationFrame(() => { resize(); if (state.player && state.mode === 'playing') {
+      state.player.x = Math.min(state.player.x, W - state.player.radius);
+      state.player.y = Math.min(state.player.y, H - state.player.radius);
+    } });
   }
 }
-window.addEventListener('orientationchange', () => { updateTouchScale(); setTimeout(updateRotateTip, 220); });
-window.addEventListener('resize', () => { updateTouchScale(); setTimeout(updateRotateTip, 120); });
-setTimeout(() => { updateTouchScale(); updateRotateTip(); }, 60);
+/* 兜底旋转后，屏幕坐标系旋转了 90 度：把指针/触摸换算回逻辑坐标，保证操作准确 */
+function mapPointer(cx, cy) {
+  const w = window.innerWidth, h = window.innerHeight;
+  if (document.documentElement.classList.contains('portrait-fallback')) {
+    return { x: cy, y: w - cx, width: h, height: w };
+  }
+  return { x: cx, y: cy, width: w, height: h };
+}
+function applyOrientationSoon() { setTimeout(applyOrientation, 60); }
+window.addEventListener('orientationchange', () => { updateTouchScale(); applyOrientationSoon(); });
+window.addEventListener('resize', () => { updateTouchScale(); applyOrientationSoon(); });
+setTimeout(() => { updateTouchScale(); applyOrientation(); }, 60);
+document.addEventListener('visibilitychange', () => { if (!document.hidden) applyOrientation(); });
+document.addEventListener('fullscreenchange', () => applyOrientation());
 
 window.addEventListener('keydown', (e) => {
   const k = e.key.toLowerCase();
@@ -392,9 +473,10 @@ window.addEventListener('blur', () => {
 });
 cv.addEventListener('mousemove', (e) => {
   const r = cv.getBoundingClientRect();
-  mouse.x = e.clientX - r.left; mouse.y = e.clientY - r.top;
+  const pt = mapPointer(e.clientX - r.left, e.clientY - r.top);
+  mouse.x = pt.x; mouse.y = pt.y;
 });
-cv.addEventListener('mousedown', (e) => { if (e.button === 0) mouse.down = true; });
+cv.addEventListener('mousedown', (e) => { if (e.button === 0 && state.mode === 'playing') mouse.down = true; });
 window.addEventListener('mouseup', () => { mouse.down = false; });
 cv.addEventListener('contextmenu', (e) => e.preventDefault());
 
@@ -405,7 +487,7 @@ function audio() {
   try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { actx = null; }
   return actx;
 }
-function beep(freq, dur, type = 'square', vol = .05, slideTo = null) {
+function beep(freq, dur, type = 'sine', vol = .035, slideTo = null) {
   const a = audio(); if (!a) return;
   try {
     const o = a.createOscillator(), g = a.createGain();
@@ -418,17 +500,17 @@ function beep(freq, dur, type = 'square', vol = .05, slideTo = null) {
   } catch (e) {}
 }
 const sfx = {
-  hit:  () => beep(rand(320, 420), .06, 'square', .032, 180),
-  crit: () => beep(560, .10, 'sawtooth', .045, 220),
-  hurt: () => beep(180, .16, 'sawtooth', .055, 70),
-  levelup: () => { beep(520, .1, 'triangle', .05); setTimeout(() => beep(780, .16, 'triangle', .05), 90); },
-  dash: () => beep(680, .08, 'sine', .03, 1100),
-  skill: () => beep(300, .18, 'sawtooth', .045, 700),
-  boom: () => beep(90, .3, 'sawtooth', .06, 40),
-  boss: () => { beep(120, .5, 'sawtooth', .06, 60); setTimeout(() => beep(90, .6, 'square', .05, 45), 260); },
-  die:  () => beep(220, .5, 'sawtooth', .06, 50),
-  win:  () => [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => beep(f, .22, 'triangle', .05), i * 130)),
-  coin: () => beep(880, .05, 'square', .022, 1300)
+  hit:  () => beep(rand(360, 480), .07, 'sine', .018, 300),
+  crit: () => beep(560, .12, 'triangle', .028, 420),
+  hurt: () => beep(240, .14, 'sine', .028, 180),
+  levelup: () => { beep(520, .12, 'sine', .03); setTimeout(() => beep(780, .18, 'sine', .03), 100); },
+  dash: () => beep(560, .10, 'sine', .018, 820),
+  skill: () => beep(320, .16, 'sine', .026, 560),
+  boom: () => beep(120, .26, 'sine', .03, 72),
+  boss: () => { beep(180, .38, 'sine', .03, 120); setTimeout(() => beep(140, .42, 'sine', .026, 96), 220); },
+  die:  () => beep(300, .30, 'sine', .026, 170),
+  win:  () => [523, 659, 784, 1046].forEach((f, i) => setTimeout(() => beep(f, .20, 'sine', .032), i * 140)),
+  coin: () => beep(880, .05, 'sine', .014, 1040)
 };
 
 /* ---------------- 屏幕效果 / 飘字 / 粒子 ---------------- */
@@ -449,18 +531,21 @@ function makePlayer(prev) {
   const p = {
     x: W / 2, y: H / 2, vx: 0, vy: 0, radius: 16,
     level: 1, xp: 0, xpNext: 12,
-    maxHp: 120, hp: 120,
-    baseDmg: 22, dmgMul: 1, atkSpeedMul: 1, speedMul: 1,
+    maxHp: 320, hp: 320,
+    baseDmg: 36, dmgMul: 1, atkSpeedMul: 1.15, speedMul: 1,
     crit: .08, critMul: 1.6,
-    regen: 0, lifesteal: 0, thorn: 0, cdr: 1,
-    atkRange: 68, pierce: 0, projCount: 1, pickupRange: 70,
-    dashCdMax: 1.6, dashCd: 0, dashT: 0, dashDur: .16, dashDir: { x: 1, y: 0 },
+    regen: 2.2, lifesteal: 0, thorn: 0, cdr: .8,
+    atkRange: 96, pierce: 2, projCount: 1, pickupRange: 105,
+    /* 刀身与判定分离：刀只画到 swordLen，命中判定用 atkRange（刀短了但更准） */
+    swordLen: 58, knockForce: 430, blockMax: 5, block: 5, blockCd: 0,
+    parryT: 0, atkCd: 0, combo: 0, comboWindow: 0, spinBonus: 0,
+    dashCdMax: 1.1, dashCd: 0, dashT: 0, dashDur: .16, dashDir: { x: 1, y: 0 },
     invuln: 0, shield: 0, shieldStart: 0,
     atkTimer: 0, atkAnim: 0, facing: { x: 1, y: 0 },
     skills: [
       { name:'斩击', cd: 2.4, t: 0, key:'Q' },
       { name:'旋风', cd: 6.5, t: 0, key:'E' },
-      { name:'冲击波', cd: 9.0, t: 0, key:'R' }
+      { name:'追猎', cd: 9.0, t: 0, key:'R' }
     ],
     upgrades: {}, hurtFlash: 0
   };
@@ -470,7 +555,8 @@ function makePlayer(prev) {
     p.baseDmg = prev.baseDmg; p.dmgMul = prev.dmgMul; p.atkSpeedMul = prev.atkSpeedMul;
     p.speedMul = prev.speedMul; p.crit = prev.crit; p.critMul = prev.critMul;
     p.regen = prev.regen; p.lifesteal = prev.lifesteal; p.thorn = prev.thorn; p.cdr = prev.cdr;
-    p.atkRange = prev.atkRange; p.pierce = prev.pierce; p.projCount = prev.projCount;
+    p.atkRange = prev.atkRange; p.swordLen = prev.swordLen; p.knockForce = prev.knockForce;
+    p.blockMax = prev.blockMax; p.block = prev.blockMax;
     p.pickupRange = prev.pickupRange; p.dashCdMax = prev.dashCdMax;
     p.upgrades = Object.assign({}, prev.upgrades);
     p.shieldStart = prev.shieldStart;
@@ -481,8 +567,10 @@ function makePlayer(prev) {
 }
 const playerDmg = (p) => p.baseDmg * p.dmgMul;
 const playerSpeed = (p) => 250 * p.speedMul;
+/* 基础攻速：连击越长挥刀越快，最后一刀略慢但击退更强 */
+const playerAtkCd = (p) => (p.combo === 2 ? .30 : .25) / p.atkSpeedMul;
 
-﻿/* ---------------- 怪物生成 ---------------- */
+/* ---------------- 怪物生成 ---------------- */
 function spawnEnemy(type, x, y, opts = {}) {
   const base = ENEMY_TYPES[type];
   const li = state.levelIndex;
@@ -511,8 +599,8 @@ function spawnBoss() {
   const b = {
     type:'boss', isBoss:true, name:def.name, shape:def.shape,
     x: W / 2, y: H * .25,
-    maxHp: def.hp * (1 + li * .06), dmg: def.dmg * (1 + li * .05),
-    speed: def.speed, radius: def.radius,
+    maxHp: def.hp * (1 + li * .06) * .62, dmg: def.dmg * (1 + li * .05) * .22,
+    speed: def.speed * .68, radius: def.radius,
     color: def.color, color2: def.color2,
     phases: def.phases, phaseIdx: 0,
     angle: 0, shotCd: 1.8, spawnCd: 3.5, dashCd: 3.2, dashing: 0, teleCd: 4,
@@ -532,6 +620,20 @@ function currentPhase(b) {
 }
 
 /* ---------------- 伤害结算 ---------------- */
+/* 找出离某个坐标最近的活怪（含激活中的首领）；没有就返回 null */
+function nearestEnemyTo(x, y) {
+  let best = null, bd = Infinity;
+  for (const e of state.enemies) {
+    if (e.dead) continue;
+    const d = Math.hypot(e.x - x, e.y - y);
+    if (d < bd) { bd = d; best = e; }
+  }
+  if (state.boss && state.bossActive && !state.boss.dead) {
+    const d = Math.hypot(state.boss.x - x, state.boss.y - y);
+    if (d < bd) { bd = d; best = state.boss; }
+  }
+  return best;
+}
 function damageEnemy(e, dmg, opts = {}) {
   if (e.dead) return;
   const crit = !!opts.crit;
@@ -559,6 +661,7 @@ function damagePlayer(dmg) {
   const p = state.player;
   if (!p || state.mode !== 'playing') return;
   if (p.invuln > 0 || p.dashT > 0) return;
+  if (state.relaxProtectT > 0) return;   // 减压保护：本关开局前 3 秒不受伤害
   if (p.shield > 0) {
     p.shield--; p.invuln = .8;
     addText(p.x, p.y - 28, '护盾抵消', '#7fe6ff', 15);
@@ -592,6 +695,7 @@ function killEnemy(e) {
   }
   state.enemies = state.enemies.filter(x => x !== e);
 }
+
 function explodeEnemy(e) {
   const p = state.player;
   if (p && dist(e, p) < 92) damagePlayer(e.dmg);
@@ -607,13 +711,15 @@ function explodeEnemy(e) {
 const screens = {
   menu: document.getElementById('menu'),
   levelSelect: document.getElementById('levelSelect'),
-  levelUp: document.getElementById('levelUp'),
   shop: document.getElementById('shop'),
   pause: document.getElementById('pause'),
   gameOver: document.getElementById('gameOver')
 };
+/* luPanel 不是整屏界面，它嵌在商店（结算页）里，由 openLevelUp/closeLevelUp 单独控制。 */
 function showScreen(name) {
-  for (const k in screens) screens[k].classList.toggle('hidden', k !== name);
+  for (const k in screens) {
+    screens[k].classList.toggle('hidden', k !== name);
+  }
   const hud = document.getElementById('hud');
   hud.style.opacity = name ? '0' : '1';
   hud.style.pointerEvents = 'none';
@@ -632,35 +738,96 @@ function fillStats(pairs) {
     pairs.map(([k, v]) => `<div class="stat"><span>${k}</span><b>${v}</b></div>`).join('');
 }
 function togglePause() {
-  if (state.mode === 'playing') { state.mode = 'pause'; showScreen('pause'); }
-  else if (state.mode === 'pause') { state.mode = 'playing'; showScreen(null); }
+  if (state.mode === 'playing') {
+    state.mode = 'pause'; closeLevelUp(); showScreen('pause');
+  } else if (state.mode === 'pause') {
+    state.mode = 'playing'; showScreen(null);
+    /* 升级只在通关结算里选，恢复战斗时不再挂面板。 */
+  }
 }
 
 /* ---------------- 玩家技能（普攻 / 闪避 / QER） ---------------- */
+/* 是否"按住"攻击：鼠标左键、空格或触屏按住。
+   未按住时按单次朝向挥刀，按住时进入整圈回旋斩。 */
+function isHeldAttack() {
+  if (keys[" "] || mouse.down) return true;
+  /* 触屏：右半屏按住即回旋斩。不额外要求"左手没在推摇杆"，
+     否则边移动边长按时会打不出整圈攻击。 */
+  if (touch.active) {
+    const held = touch.holding;
+    if (held) { for (const k in held) if (held[k]) return true; }
+  }
+  return false;
+}
+/* 挥刀：按住不动时化身回旋斩——伤害与击退覆盖身周整整一圈，
+   把靠近的怪全部甩到圈外；单点/短按仍是朝向前方的一道快刀。
+   连击：第 1/2 刀更快，第 3 刀更慢但击退翻倍。 */
 function playerAttack() {
   const p = state.player;
-  if (!p || p.atkTimer > 0) return;
-  p.atkTimer = .34 / p.atkSpeedMul;
+  if (!p || p.atkCd > 0) return;
+  p.combo = p.comboWindow > 0 ? (p.combo + 1) % 3 : 0;
+  p.comboWindow = .48;
+  p.atkCd = playerAtkCd(p);
   p.atkAnim = 1;
-  const range = p.atkRange;
-  const arc = Math.PI * .95;
+  /* 按住不动 = 回旋斩：整圈覆盖 */
+  const spin = isHeldAttack();
+  if (spin) p.spinBonus = Math.min(1.2, p.spinBonus + .18);   // 连续回旋越转越猛，最多 +120%
+  const range = p.atkRange * (spin ? 1.55 : 1.35);
+  const arc = spin ? Math.PI * 2 : Math.PI * 1.25;            // 一圈 或 前方扇区
   const fa = Math.atan2(p.facing.y, p.facing.x);
+  const heavy = p.combo === 2;                                // 第 3 刀为重击
+  const knock = p.knockForce * (heavy ? 2.1 : 1) * (1 + p.spinBonus);
   let hits = 0;
-  const maxHits = 3 + p.pierce;
+  const maxHits = (spin ? 18 : 10) + p.pierce;                  // 回旋斩能同时甩开更多目标
   const targets = state.enemies.slice();
   if (state.boss && state.bossActive) targets.push(state.boss);
   for (const e of targets) {
     if (hits >= maxHits) break;
     const d = dist(e, p);
     if (d > range + e.radius) continue;
+    if (!spin) {                                              // 非回旋时只打身前扇区
+      const a = Math.atan2(e.y - p.y, e.x - p.x);
+      const diff = Math.abs(((a - fa + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+      if (diff > arc / 2) continue;
+    }
+    hits++;
+    damageEnemy(e, playerDmg(p) * (heavy ? 1.25 : 1), { crit: Math.random() < p.crit, knock: !e.isBoss, kx: p.x, ky: p.y, knockForce: knock });
+  }
+  const guard = lungeGuard(p, fa, spin);                     // 挥刀即格挡（回旋时整圈推挤）
+  /* 特效：回旋斩画出完整一圈刀光，普通刀只画身前弧光 */
+  if (spin) {
+    state.particles.push({ slash:true, x:p.x, y:p.y, ang:0, t:0, life:.2, vx:0, vy:0, color:'#dff0ff', size:p.atkRange * 1.9, full:true });
+  } else {
+    state.particles.push({ slash:true, x:p.x + p.facing.x * 26, y:p.y + p.facing.y * 26, ang:fa, t:0, life:.16, vx:0, vy:0, color:'#dff0ff', size:p.atkRange * .78 });
+  }
+  if (hits > 0 || guard > 0) { hitStop(.03); shake(spin ? 3.6 : 2.8, .08); }
+}
+
+/* 主动格挡：把扇形（回旋时整圈）内的目标推开，并给很短的无敌帧与招架窗口。
+   格挡槽耗尽时退化为普通击退，保证普攻永远可用、不会卡死。 */
+function lungeGuard(p, fa, fullCircle) {
+  const pushR = p.atkRange * (fullCircle ? 1.18 : .92);
+  const pushArc = fullCircle ? Math.PI * 2 : Math.PI * .84;
+  const active = p.block > 0 && p.blockCd <= 0;
+  let n = 0;
+  const targets = state.enemies.slice();
+  if (state.boss && state.bossActive) targets.push(state.boss);
+  for (const e of targets) {
+    const d = dist(e, p);
+    if (d > pushR + e.radius) continue;
     const a = Math.atan2(e.y - p.y, e.x - p.x);
     const diff = Math.abs(((a - fa + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
-    if (diff > arc / 2) continue;
-    hits++;
-    damageEnemy(e, playerDmg(p), { crit: Math.random() < p.crit, knock: !e.isBoss, kx: p.x, ky: p.y, knockForce: 210 });
+    if (diff > pushArc / 2) continue;
+    const kf = (active ? p.knockForce * 1.5 : p.knockForce) * (e.isBoss ? .2 : 1);
+    e.knockX = Math.cos(a) * kf; e.knockY = Math.sin(a) * kf;
+    if (active) { spawnParticles(e.x, e.y, 3, '#9fe8ff', 120, .3, 2.4); n++; }
   }
-  state.particles.push({ slash:true, x:p.x + p.facing.x * 30, y:p.y + p.facing.y * 30, ang:fa, t:0, life:.18, vx:0, vy:0, color:'#dff0ff', size:p.atkRange * .9 });
-  if (hits > 0) { hitStop(.03); shake(2.5, .08); }
+  if (active) {
+    p.block--; p.blockCd = .32;
+    p.parryT = .26;                                  // 招架窗口：反弹飞行道具
+    p.invuln = Math.max(p.invuln, .18);
+  }
+  return n;
 }
 function tryDash() {
   const p = state.player;
@@ -692,7 +859,7 @@ function useSkill(i) {
 
   if (i === 0) {                              // Q：前方大范围斩击 + 击退
     sfx.skill();
-    const range = p.atkRange * 1.5, arc = Math.PI * 1.1;
+    const range = p.atkRange * 1.7, arc = Math.PI * 1.15;
     const targets = state.enemies.slice();
     if (state.boss && state.bossActive) targets.push(state.boss);
     for (const e of targets) {
@@ -700,33 +867,52 @@ function useSkill(i) {
       if (d > range + e.radius) continue;
       const a = Math.atan2(e.y - p.y, e.x - p.x);
       if (Math.abs(((a - fa + Math.PI * 3) % (Math.PI * 2)) - Math.PI) > arc / 2) continue;
-      damageEnemy(e, dmg * 2.2, { crit: Math.random() < p.crit, knock: !e.isBoss, kx: p.x, ky: p.y, knockForce: 430 });
+      damageEnemy(e, dmg * 2.2, { crit: Math.random() < p.crit, knock: !e.isBoss, kx: p.x, ky: p.y, knockForce: 520 * (1 + p.spinBonus) });
     }
+    lungeGuard(p, fa);
+    p.block = Math.min(p.blockMax, p.block + 1);      // 主动技能回一格格挡
     state.zones.push({ x:p.x, y:p.y, rMax:range, t:0, life:.28, color:'#cfe6ff', kind:'ring' });
     shake(6, .18);
   } else if (i === 1) {                       // E：自身周围持续旋风
     sfx.skill();
-    state.zones.push({ x:p.x, y:p.y, r:p.atkRange * 1.35, rMax:p.atkRange * 1.35, t:0, life:.7, color:'#9fe8ff', kind:'spin', follow:true, tick:0, dmg:dmg * .9 });
+    state.zones.push({ x:p.x, y:p.y, r:p.atkRange * 1.5, rMax:p.atkRange * 1.5, t:0, life:.85, color:'#9fe8ff', kind:'spin', follow:true, tick:0, dmg:dmg * .9, knock:p.knockForce * .9 });
+    p.block = Math.min(p.blockMax, p.block + 1);
+    p.invuln = Math.max(p.invuln, .22);
     shake(5, .2);
-  } else {                                    // R：朝鼠标方向射出穿透冲击波
+  } else {                                    // R：锁定全场，点一下自动命中所有怪物
     sfx.skill();
-    const base = Math.atan2(mouse.y - p.y, mouse.x - p.x);
-    for (let k = 0; k < p.projCount; k++) {
-      const off = p.projCount === 1 ? 0 : (k - (p.projCount - 1) / 2) * .22;
-      const a = base + off;
+    /* 目标清单：屏幕上的全部小怪 + 激活中的首领（首领不重复计） */
+    const targets = state.enemies.filter(e => !e.dead);
+    if (state.boss && state.bossActive && !state.boss.dead) targets.push(state.boss);
+    if (!targets.length) {                     // 场上没怪时只放一道朝向前方的空斩，避免"点了没反应"
+      const a = Math.atan2(p.facing.y, p.facing.x);
       state.projectiles.push({ friendly:true, x:p.x, y:p.y, vx:Math.cos(a)*520, vy:Math.sin(a)*520,
-        r:16, dmg:dmg * 1.5, pierce:5 + p.pierce, t:0, life:1.1, color:'#9fe8ff', wave:true });
+        r:16, dmg:dmg * 1.5, pierce:0, t:0, life:.5, color:'#9fe8ff', wave:true });
+      shake(6, .2);
+      return;
     }
-    shake(6, .2);
+    /* 每只怪都锁定一道追踪光刃：home 目标、必中、命中后分裂出额外光刃（穿透强化继续生效） */
+    const extra = Math.max(0, p.pierce);
+    const mult = 1.5 + (p.projCount - 1) * .35;   // 裂空：命中伤害随之提高
+    for (const e of targets) {
+      state.projectiles.push({
+        friendly:true, homing:true, target:e, x:p.x, y:p.y,
+        vx:Math.cos(Math.atan2(e.y - p.y, e.x - p.x)) * 620,
+        vy:Math.sin(Math.atan2(e.y - p.y, e.x - p.x)) * 620,
+        r:15, dmg:dmg * mult, pierce:0, extraSplits:extra,
+        t:0, life:1.6, color:'#9fe8ff', wave:true, trail:[]
+      });
+    }
+    shake(7, .24);
   }
 }
 
-﻿/* ---------------- 敌人 AI ---------------- */
+/* ---------------- 敌人 AI ---------------- */
 function enemyShoot(e, ang) {
   state.projectiles.push({ friendly:false, x:e.x, y:e.y,
     vx:Math.cos(ang) * (e.projSpeed || 220), vy:Math.sin(ang) * (e.projSpeed || 220),
     r:9, dmg:e.dmg, t:0, life:3.2, color:e.color });
-  beep(300, .07, 'square', .02, 180);
+  beep(360, .07, 'sine', .012, 280);
 }
 function updateEnemy(e, dt) {
   const p = state.player;
@@ -825,6 +1011,15 @@ function updateEnemy(e, dt) {
     }
   }
 
+  /* 舒适圈：怪物进入主角附近会被柔和推开，避免贴脸堆叠。 */
+  const comfortR = p.radius + 56;
+  if (d < comfortR + e.radius) {
+    const pa = Math.atan2(e.y - p.y, e.x - p.x);
+    const push = Math.min(1, (comfortR + e.radius - d) / 46) * 120;
+    e.x += Math.cos(pa) * push * dt;
+    e.y += Math.sin(pa) * push * dt;
+  }
+
   if (d < e.radius + p.radius && e.ai !== 'suicide' && e.touchCd <= 0) {
     e.touchCd = .7;
     damagePlayer(e.dmg);
@@ -879,7 +1074,7 @@ function updateBoss(b, dt) {
       b.dashing = .42;
       b.dashVX = Math.cos(ang) * 560; b.dashVY = Math.sin(ang) * 560;
       spawnParticles(b.x, b.y, 18, b.color, 220, .45, 4);
-      beep(160, .22, 'sawtooth', .045, 90);
+      beep(180, .20, 'sine', .020, 120);
     }
     if (ph.teleport) {
       b.teleCd -= dt;
@@ -900,7 +1095,7 @@ function updateBoss(b, dt) {
     const n = ph.shots;
     if (ph.ring) for (let i = 0; i < n; i++) bossShoot(b, (i / n) * Math.PI * 2 + b.angle, ph);
     else for (let i = 0; i < n; i++) bossShoot(b, ang + (i - (n - 1) / 2) * .16, ph);
-    beep(240, .1, 'square', .026, 150);
+    beep(280, .10, 'sine', .014, 210);
   }
 
   b.spawnCd -= dt;
@@ -931,9 +1126,9 @@ function gainXp(n) {
     p.xp -= p.xpNext;
     p.level++;
     p.xpNext = Math.round(p.xpNext * 1.32 + 4);
-    state.levelUpQueue++;
+    state.levelUpQueue++;   // 只记账，战斗中完全不打扰玩家
   }
-  if (state.levelUpQueue > 0 && state.mode === 'playing') openLevelUp();
+  /* 升级强化统一挪到通关结算时选择，战斗中不再弹窗。 */
 }
 function burstAt(x, y, radius, dmg) {
   state.zones.push({ x, y, rMax:radius, t:0, life:.3, color:'#ffb04d', kind:'boom' });
@@ -944,6 +1139,7 @@ function burstAt(x, y, radius, dmg) {
 /* ---------------- 主更新 ---------------- */
 function update(dt) {
   state.time += dt;
+  if (state.relaxProtectT > 0) state.relaxProtectT -= dt;
   if (state.hitStop > 0) { state.hitStop -= dt; dt *= .18; }
   if (state.shakeT > 0) { state.shakeT -= dt; if (state.shakeT <= 0) state.shakeMag = 0; }
 
@@ -985,12 +1181,21 @@ function update(dt) {
   for (const s of p.skills) if (s.t > 0) s.t = Math.max(0, s.t - dt);
   if (p.regen > 0) healPlayer(p.regen * dt, false);
 
-  /* 静止时朝向鼠标 */
-  if (len === 0 && Math.hypot(mouse.x - p.x, mouse.y - p.y) > 18) {
+  /* 瞄准：位移时朝向移动方向，平时始终朝向鼠标（触屏跟随手指/准星） */
+  if (len > 0) {
+    p.facing.x = dx; p.facing.y = dy;
+  } else if (Math.hypot(mouse.x - p.x, mouse.y - p.y) > 10) {
     const a = Math.atan2(mouse.y - p.y, mouse.x - p.x);
     p.facing.x = Math.cos(a); p.facing.y = Math.sin(a);
   }
-  if (mouse.down || keys[' ']) playerAttack();
+  if (p.atkCd > 0) p.atkCd -= dt;
+  if (p.blockCd > 0) p.blockCd -= dt;
+  else if (p.block < p.blockMax) p.block = Math.min(p.blockMax, p.block + dt * 1.2);  // 格挡槽自动回复
+  if (p.parryT > 0) p.parryT -= dt;                                                  // 招架窗口
+  p.comboWindow -= dt;
+  if (!isHeldAttack() && p.spinBonus > 0) p.spinBonus = Math.max(0, p.spinBonus - dt * .9);  // 回旋加成缓慢消退
+  if (p.comboWindow <= 0) p.combo = 0;                                               // 连击窗口超时重置
+  playerAttack();   // 减压休闲版：自动攻击，不需要一直按攻击键
 
   /* 怪物与首领 */
   for (const e of state.enemies.slice()) updateEnemy(e, dt);
@@ -999,34 +1204,91 @@ function update(dt) {
   /* 投射物 */
   for (const pr of state.projectiles.slice()) {
     pr.t += dt;
+    /* 追踪光刃：每帧朝锁定目标转向，目标没了/死了就改锁最近的活怪，
+       保证点一下就一定命中，不会擦着边飞过去。 */
+    if (pr.homing) {
+      if (!pr.target || pr.target.dead || pr.target.hp <= 0) {
+        pr.target = nearestEnemyTo(pr.x, pr.y);
+        if (!pr.target) { state.projectiles = state.projectiles.filter(x => x !== pr); continue; }
+      }
+      const ta = Math.atan2(pr.target.y - pr.y, pr.target.x - pr.x);
+      const ca = Math.atan2(pr.vy, pr.vx);
+      let da = ((ta - ca + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+      const turn = Math.min(Math.abs(da), 7.5 * dt) * Math.sign(da || 1);
+      const na = ca + turn;
+      const spd = Math.hypot(pr.vx, pr.vy) || 620;
+      pr.vx = Math.cos(na) * spd; pr.vy = Math.sin(na) * spd;
+    }
     pr.x += pr.vx * dt; pr.y += pr.vy * dt;
+    if (pr.homing) {                              // 拖尾采样，画一道追踪光刃
+      if (!pr.trail) pr.trail = [];
+      pr.trail.push({ x: pr.x, y: pr.y });
+      if (pr.trail.length > 9) pr.trail.shift();
+    }
     if (pr.t > pr.life || pr.x < -60 || pr.x > W + 60 || pr.y < -60 || pr.y > H + 60) {
       state.projectiles = state.projectiles.filter(x => x !== pr);
       continue;
     }
     if (pr.friendly) {
-      for (const e of state.enemies.slice()) {
-        if (pr.pierce <= 0) break;
-        if (dist(pr, e) < pr.r + e.radius) {
-          damageEnemy(e, pr.dmg, {});
-          if (pr.explode) burstAt(pr.x, pr.y, 70, pr.dmg * .6);
+      /* 追踪光刃：锁定目标必然命中（不依赖位置重叠），命中后收束 */
+      if (pr.homing) {
+        const tgt = pr.target;
+        if (tgt && !tgt.dead && dist(pr, tgt) < pr.r + tgt.radius + 26) {
+          damageEnemy(tgt, pr.dmg, { crit:Math.random() < state.player.crit,
+            knock:!tgt.isBoss, kx:state.player.x, ky:state.player.y, knockForce:tgt.isBoss ? 40 : 200 });
+          spawnParticles(tgt.x, tgt.y, 12, '#9fe8ff', 240, .4, 3.2);
+          /* 裂空强化：命中后向附近其他怪分裂出额外光刃 */
+          if (pr.extraSplits > 0) {
+            let split = 0;
+            const claimed = new Set([tgt]);
+            for (const e of state.enemies.slice()) {
+              if (split >= pr.extraSplits) break;
+              if (e.dead || claimed.has(e)) continue;
+              claimed.add(e);
+              state.projectiles.push({ friendly:true, homing:true, target:e, x:tgt.x, y:tgt.y,
+                vx:0, vy:0, r:13, dmg:pr.dmg * .8, pierce:0, extraSplits:0, t:0, life:1.2,
+                color:'#9fe8ff', wave:true, trail:[] });
+              split++;
+            }
+          }
+          state.projectiles = state.projectiles.filter(x => x !== pr);
+          continue;
+        }
+      } else {
+        /* 普通穿透弹（含招架反弹回来的）：按位置重叠判定，打满穿透次数后消失 */
+        for (const e of state.enemies.slice()) {
+          if (pr.pierce <= 0) break;
+          if (dist(pr, e) < pr.r + e.radius) {
+            damageEnemy(e, pr.dmg, {});
+            if (pr.explode) burstAt(pr.x, pr.y, 70, pr.dmg * .6);
+            pr.pierce--;
+          }
+        }
+        if (state.boss && state.bossActive && pr.pierce > 0 && dist(pr, state.boss) < pr.r + state.boss.radius) {
+          damageEnemy(state.boss, pr.dmg, {});
           pr.pierce--;
         }
+        if (pr.pierce <= 0) state.projectiles = state.projectiles.filter(x => x !== pr);
       }
-      if (state.boss && state.bossActive && pr.pierce > 0 && dist(pr, state.boss) < pr.r + state.boss.radius) {
-        damageEnemy(state.boss, pr.dmg, {});
-        pr.pierce--;
-      }
-      if (pr.pierce <= 0) state.projectiles = state.projectiles.filter(x => x !== pr);
     } else {
-      if (dist(pr, p) < pr.r + p.radius) {
-        damagePlayer(pr.dmg);
-        if (pr.explode) {
-          state.zones.push({ x:pr.x, y:pr.y, rMax:80, t:0, life:.3, color:'#ffb04d', kind:'boom' });
-          spawnParticles(pr.x, pr.y, 18, '#ffb04d', 220, .5, 3.5);
-          shake(6, .18); sfx.boom();
+      if (dist(pr, p) < pr.r + p.radius + 8) {
+        if (p.parryT > 0 && !pr.reflected) {              // 招架：反弹回敌方
+          pr.reflected = true; pr.friendly = true; pr.dmg *= 1.4;
+          pr.homing = false; pr.target = null; pr.trail = null;   // 反弹后按直线走
+          const a = Math.atan2(pr.vy, pr.vx) + Math.PI;
+          pr.vx = Math.cos(a) * 560; pr.vy = Math.sin(a) * 560;
+          pr.pierce = 3; pr.color = '#ffd479'; pr.life = 1.6;
+          addText(p.x, p.y - 30, '招架！', '#ffd479', 16);
+          beep(880, .1, 'triangle', .05, 1400);
+        } else {
+          damagePlayer(pr.dmg);
+          if (pr.explode) {
+            state.zones.push({ x:pr.x, y:pr.y, rMax:80, t:0, life:.3, color:'#ffb04d', kind:'boom' });
+            spawnParticles(pr.x, pr.y, 18, '#ffb04d', 220, .5, 3.5);
+            shake(6, .18); sfx.boom();
+          }
+          state.projectiles = state.projectiles.filter(x => x !== pr);
         }
-        state.projectiles = state.projectiles.filter(x => x !== pr);
       }
     }
   }
@@ -1039,7 +1301,11 @@ function update(dt) {
       z.tick -= dt;
       if (z.tick <= 0) {
         z.tick = .14;
-        for (const e of state.enemies.slice()) if (dist(e, z) < z.r + e.radius) damageEnemy(e, z.dmg, {});
+        for (const e of state.enemies.slice()) {
+          if (dist(e, z) < z.r + e.radius) {
+            damageEnemy(e, z.dmg, { knock: !e.isBoss, kx: z.x, ky: z.y, knockForce: (z.knock || 180) });
+          }
+        }
         if (state.boss && state.bossActive && dist(state.boss, z) < z.r + state.boss.radius) damageEnemy(state.boss, z.dmg, {});
       }
     }
@@ -1093,7 +1359,7 @@ function update(dt) {
   updateHud();
 }
 
-﻿/* ---------------- 关卡流程 ---------------- */
+/* ---------------- 关卡流程 ---------------- */
 function startLevel(idx, opts = {}) {
   state.levelIndex = idx;
   state.enemies = []; state.projectiles = []; state.particles = [];
@@ -1101,15 +1367,19 @@ function startLevel(idx, opts = {}) {
   state.boss = null; state.bossActive = false; state.bossDone = false;
   state.wave = 0; state.waveTimer = 0; state.pendingSpawn = 0; state.spawnTimer = 0;
   state.wavePhase = 'intro';
-  state.kills = 0; state.runCoins = 0; state.time = 0; state.levelUpQueue = 0;
+  state.kills = 0; state.runCoins = 0; state.time = 0;
+  /* 上一关结算时没选完的升级先自动生效，不能因为玩家直接开下一关就白丢。 */
+  drainLevelUpQueue();
+  closeLevelUp();
   state.eliteWave = false; state.shieldGiven = false;
+  state.relaxProtectT = 3;
   state.player = makePlayer(opts.keepPlayer ? state.player : null);
   state.player.x = W / 2; state.player.y = H / 2;
   mouse.x = W / 2; mouse.y = H / 2 - 120;
   state.mode = 'playing';
   showScreen(null);
   const L = LEVELS[idx];
-  document.getElementById('hintKeys').textContent = 'WASD 移动 · 空格/左键 攻击 · Shift 闪避 · Q/E/R 技能 · P 暂停';
+  document.getElementById('hintKeys').textContent = '自动攻击 · WASD/摇杆移动 · 按住攻击=大圈回旋 · R=全场命中 · 前几秒免伤';
   announce('第 ' + L.id + ' 关 · ' + L.name, L.desc);
   state.waveTimer = 1.8;
 }
@@ -1158,7 +1428,7 @@ function updateWaves(dt) {
   // 波次刷怪并发控制
   if (state.pendingSpawn > 0) {
     state.spawnTimer -= dt;
-    if (state.spawnTimer <= 0 && state.enemies.length < 26) {
+    if (state.spawnTimer <= 0 && state.enemies.length < 46) {
       state.spawnTimer = Math.max(.22, .75 - state.wave * .06);
       state.pendingSpawn--;
       const pos = edgeSpawnPos();
@@ -1187,6 +1457,10 @@ function updateHud() {
   document.getElementById('xpTxt').textContent = 'Lv.' + p.level + '   ' + p.xp + ' / ' + p.xpNext;
   document.getElementById('stFill').style.width = (p.dashCd <= 0 ? 100 : clamp(1 - p.dashCd / p.dashCdMax, 0, 1) * 100) + '%';
   document.getElementById('stTxt').textContent = p.dashCd <= 0 ? '就绪' : p.dashCd.toFixed(1) + 's';
+  /* 格挡槽 */
+  const blkFill = document.getElementById('blkFill'), blkTxt = document.getElementById('blkTxt');
+  if (blkFill) blkFill.style.width = clamp(p.block / p.blockMax, 0, 1) * 100 + '%';
+  if (blkTxt) blkTxt.textContent = p.block + ' / ' + p.blockMax;
   document.getElementById('lvNum').textContent = LEVELS[state.levelIndex].id;
   document.getElementById('coinNum').textContent = state.runCoins;
   document.getElementById('waveInfo').textContent =
@@ -1285,10 +1559,10 @@ function drawOrb(o) {
   ctx.restore();
 }
 
-﻿/* 大刀绘制：长度跟随攻击范围 atkRange，刀尖约达攻击范围边缘 */
-function drawBigSword(ctx, atkRange, glow) {
+/* 大刀绘制：长度由 swordLen 决定（固定、克制的刀身），命中判定另由 atkRange 决定 */
+function drawBigSword(ctx, swordLen, glow) {
   const grip = 6;
-  const len = Math.max(48, atkRange * 1.34);
+  const len = clamp(swordLen, 34, 96);   // 刀身固定且克制，判定仍由 atkRange 决定
   const tipW = len * .30;
   const g = glow || 0;
 
@@ -1375,7 +1649,7 @@ function drawPlayer(p) {
   const swing = p.atkAnim > 0 ? ((1 - p.atkAnim) * 1.7 - .85) : 0.32;
   ctx.save();
   ctx.rotate(swing);
-  drawBigSword(ctx, p.atkRange, p.atkAnim > 0 ? Math.min(1, p.atkAnim * 1.6) : .45);
+  drawBigSword(ctx, p.swordLen, p.atkAnim > 0 ? Math.min(1, p.atkAnim * 1.6) : .45);
   ctx.restore();
   ctx.restore();
 
@@ -1386,6 +1660,17 @@ function drawPlayer(p) {
     ctx.beginPath(); ctx.arc(p.x, p.y, p.radius + 8, 0, Math.PI * 2); ctx.stroke();
     ctx.restore();
   }
+
+  /* 舒适圈：淡淡的柔光边界，提示怪物不会贴脸 */
+  ctx.save();
+  ctx.globalAlpha = .10 + Math.sin(state.time * 2.2) * .035;
+  const comfort = ctx.createRadialGradient(p.x, p.y, p.radius + 6, p.x, p.y, p.radius + 56);
+  comfort.addColorStop(0, 'rgba(160,230,255,0)');
+  comfort.addColorStop(.72, 'rgba(160,230,255,.35)');
+  comfort.addColorStop(1, 'rgba(190,245,255,.12)');
+  ctx.fillStyle = comfort;
+  ctx.beginPath(); ctx.arc(p.x, p.y, p.radius + 56, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
 }
 function drawEnemy(e) {
   ctx.save();
@@ -1607,6 +1892,19 @@ function drawBoss(b) {
 }
 function drawProjectile(pr) {
   ctx.save();
+  /* 追踪光刃：先画一条渐隐拖尾，视觉上能看出是"飞过去咬住怪"的 */
+  if (pr.homing && pr.trail && pr.trail.length > 1) {
+    ctx.lineCap = 'round';
+    for (let i = 1; i < pr.trail.length; i++) {
+      const k = i / pr.trail.length;
+      ctx.strokeStyle = hexA(pr.color, k * .55);
+      ctx.lineWidth = 2 + k * 7;
+      ctx.beginPath();
+      ctx.moveTo(pr.trail[i - 1].x, pr.trail[i - 1].y);
+      ctx.lineTo(pr.trail[i].x, pr.trail[i].y);
+      ctx.stroke();
+    }
+  }
   const r = pr.r * (pr.wave ? 1 + Math.sin(state.time * 22) * .12 : 1);
   const rg = ctx.createRadialGradient(pr.x, pr.y, 0, pr.x, pr.y, r * 2);
   rg.addColorStop(0, '#ffffff');
@@ -1623,12 +1921,24 @@ function drawProjectile(pr) {
 function drawParticle(q) {
   ctx.save();
   if (q.slash) {
+    const k2 = clamp(q.t / q.life, 0, 1);
+    if (q.full) {                                     // 回旋斩：完整一圈刀光
+      ctx.globalAlpha = (1 - k2) * .8;
+      ctx.translate(q.x, q.y);
+      ctx.strokeStyle = q.color; ctx.lineWidth = 18 * (1 - k2) + 3;
+      ctx.lineCap = "round";
+      ctx.beginPath(); ctx.arc(0, 0, q.size * .52, 0, Math.PI * 2); ctx.stroke();
+      ctx.globalAlpha = (1 - k2) * .35;
+      ctx.lineWidth = 5;
+      ctx.beginPath(); ctx.arc(0, 0, q.size * .70, 0, Math.PI * 2); ctx.stroke();
+    } else {
     const k = clamp(q.t / q.life, 0, 1);
     ctx.globalAlpha = (1 - k) * .75;
     ctx.translate(q.x, q.y); ctx.rotate(q.ang);
     ctx.strokeStyle = q.color; ctx.lineWidth = 14 * (1 - k) + 3;
     ctx.lineCap = 'round';
-    ctx.beginPath(); ctx.arc(0, 0, q.size * .55, -1.0, 1.0); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, q.size * .55, -1.0, 1.0); ctx.stroke();
+    }
   } else {
     ctx.globalAlpha = clamp(1 - q.t / q.life, 0, 1);
     ctx.fillStyle = q.color;
@@ -1671,9 +1981,32 @@ function draw() {
   ctx.restore();
 }
 
-﻿/* ---------------- 升级三选一 ---------------- */
+/* ---------------- 升级强化：只在通关结算时选择 ---------------- */
+/* 纯逻辑消化：不进结算页时（比如直接开下一关）把待选升级随机生效，
+   避免玩家已经升级、却因为没进结算页而白丢强化。 */
+function drainLevelUpQueue() {
+  let guard = 0;
+  while (state.levelUpQueue > 0 && guard++ < 999) {
+    const p = state.player;
+    const used = p ? (p.upgrades || {}) : {};
+    let pool = UPGRADES.filter(u => (used[u.id] || 0) < u.max);
+    if (!pool.length) pool = UPGRADES.slice();
+    const u = pool[Math.floor(Math.random() * pool.length)];
+    if (p) { u.apply(p); p.upgrades[u.id] = (p.upgrades[u.id] || 0) + 1; }
+    state.levelUpQueue = Math.max(0, state.levelUpQueue - 1);
+  }
+}
+/* 战斗中升级不再弹窗打断玩家，只把待选次数记进 state.levelUpQueue，
+   等通关进入补给站（结算页）时再一次性选完，不想选的可以点"全部随机"。 */
 function openLevelUp() {
-  state.mode = 'levelup';
+  if (state.levelUpQueue <= 0) { closeLevelUp(); return; }
+  renderLevelUpCards();
+  const panel = document.getElementById('luPanel');
+  if (panel) { panel.classList.remove('hidden', 'luDone'); }
+  sfx.levelup();
+}
+/* 生成三选一卡片（可反复调用：队列里还有几级就刷新出下一组选项） */
+function renderLevelUpCards() {
   const p = state.player;
   const used = p.upgrades || {};
   let pool = UPGRADES.filter(u => (used[u.id] || 0) < u.max);
@@ -1682,32 +2015,77 @@ function openLevelUp() {
   const tmp = pool.slice();
   while (opts.length < 3 && tmp.length) opts.push(tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0]);
 
-  document.getElementById('luTitle').textContent = '等级提升 · Lv.' + p.level;
+  const titleEl = document.getElementById('luTitle');
+  if (titleEl) titleEl.textContent = '升 级 强 化 · 待选 ' + state.levelUpQueue + ' 项';
+  const tipEl = document.getElementById('luTip');
+  if (tipEl) tipEl.textContent = '本关共提升 ' + state.levelUpQueue + ' 级，逐项选完即可进入补给站';
+  const panel = document.getElementById('luPanel');
+  if (panel) panel.classList.remove('luDone');
   const box = document.getElementById('luCards');
+  if (!box) return;
   box.innerHTML = '';
   for (const u of opts) {
     const lv = used[u.id] || 0;
     const el = document.createElement('div');
-    el.className = 'card';
+    el.className = 'card lu-card';
     el.innerHTML =
       '<div class="h"><b>' + u.name + '</b><span class="cost">' + lv + '/' + u.max + '</span></div>' +
-      '<div class="d">' + u.desc + '</div><div class="lvtag">当前等级 ' + lv + '</div>';
-    el.onclick = () => {
-      applyUpgrade(u.id);
-      state.levelUpQueue--;
-      if (state.levelUpQueue > 0) openLevelUp();
-      else { state.mode = 'playing'; showScreen(null); }
+      '<div class="d">' + u.desc + '</div>';
+    el.onclick = (ev) => {
+      if (ev && ev.stopPropagation) ev.stopPropagation();
+      pickLevelUp(u.id);
     };
     box.appendChild(el);
   }
-  showScreen('levelUp');
 }
-function applyUpgrade(id) {
+/* 选中一项强化：队列里还有就刷新下一组选项，选完提示可以进补给站 */
+function pickLevelUp(id) {
+  applyUpgrade(id);
+  state.levelUpQueue = Math.max(0, state.levelUpQueue - 1);
+  if (state.levelUpQueue > 0) renderLevelUpCards();
+  else finishingLevelUp();
+}
+/* 队列清空：不隐藏面板，改为提示"选完了，可以进补给站"，
+   避免玩家点完最后一张卡后整个区块突然消失、不知道下一步该干嘛。 */
+function finishingLevelUp() {
+  const panel = document.getElementById('luPanel');
+  if (!panel) return;
+  const cards = document.getElementById('luCards');
+  if (cards) cards.innerHTML = '';
+  const titleEl = document.getElementById('luTitle');
+  if (titleEl) titleEl.textContent = '升 级 强 化 · 已 完 成';
+  const tipEl = document.getElementById('luTip');
+  if (tipEl) tipEl.textContent = '强化已全部生效，可以继续强化装备或进入下一关';
+  panel.classList.remove('hidden');
+  panel.classList.add('luDone');
+}
+function closeLevelUp() {
+  const panel = document.getElementById('luPanel');
+  if (panel) { panel.classList.add('hidden'); panel.classList.remove('luDone'); }
+}
+/* 一键随机消化掉本关全部待选升级 */
+function autoPickLevelUps() {
+  let guard = 0;
+  while (state.levelUpQueue > 0 && guard++ < 999) {
+    const p = state.player;
+    const used = p.upgrades || {};
+    let pool = UPGRADES.filter(u => (used[u.id] || 0) < u.max);
+    if (!pool.length) pool = UPGRADES.slice();
+    const u = pool[Math.floor(Math.random() * pool.length)];
+    applyUpgrade(u.id, true);
+    state.levelUpQueue = Math.max(0, state.levelUpQueue - 1);
+  }
+  sfx.levelup();
+  if (state.levelUpQueue > 0) { renderLevelUpCards(); return; }
+  finishingLevelUp();
+}
+function applyUpgrade(id, silent) {
   const u = UPGRADE_MAP[id];
   if (!u) return;
   const p = state.player;
   u.apply(p);
   p.upgrades[id] = (p.upgrades[id] || 0) + 1;
+  if (silent) return;
   sfx.levelup();
   addText(p.x, p.y - 30, u.name, '#ffe066', 18);
   spawnParticles(p.x, p.y, 26, '#ffe066', 220, .7, 3.4);
@@ -1720,12 +2098,16 @@ function shopCost(item) {
 }
 function openShop() {
   state.mode = 'shop';
-  document.getElementById('shopTitle').textContent = '补给站 · 第 ' + LEVELS[state.levelIndex].id + ' 关后';
+  closeLevelUp();
+  document.getElementById('shopTitle').textContent = '结算 · 第 ' + LEVELS[state.levelIndex].id + ' 关通过';
   const nxt = state.levelIndex + 1;
   document.getElementById('btnNextLevel').textContent =
     nxt < LEVELS.length ? '进入第 ' + LEVELS[nxt].id + ' 关：' + LEVELS[nxt].name : '返回主菜单';
   renderShop();
   showScreen('shop');
+  /* 本关攒下的升级，在这里一次性选完；没有再隐藏整个区块。 */
+  if (state.levelUpQueue > 0) openLevelUp();
+  else closeLevelUp();
 }
 function renderShop() {
   const p = state.player;
@@ -1745,7 +2127,8 @@ function renderShop() {
     ['技能冷却', Math.round((1 - p.cdr) * 100) + '% 减少'],
     ['闪避冷却', p.dashCdMax.toFixed(2) + 's'],
     ['开局护盾', p.shieldStart],
-    ['攻击范围', Math.round(p.atkRange)]
+    ['攻击判定', Math.round(p.atkRange)],
+    ['格挡', p.blockMax + ' 格 · 招架 0.26s']
   ];
   document.getElementById('statGrid').innerHTML =
     stats.map(([k, v]) => '<div class="stat"><span>' + k + '</span><b>' + v + '</b></div>').join('');
@@ -1833,19 +2216,19 @@ function renderLevelSelect() {
 
 /* ---------------- 结束 / 通关 ---------------- */
 function playerDie() {
-  state.mode = 'dead';
+  /* 减压休闲版：血量见底也只结算收益，不弹失败界面。 */
+  state.save.coins += state.runCoins;
+  writeSave();
+  state.btnRetryThisLevel = true;
+  state.mode = 'shop';
+  drainLevelUpQueue();
+  closeLevelUp();
   setTimeout(() => {
-    document.getElementById('goTitle').textContent = '你 倒 下 了';
-    document.getElementById('goSub').textContent = '第 ' + LEVELS[state.levelIndex].id + ' 关 · ' + LEVELS[state.levelIndex].name;
-    document.getElementById('btnGoShop').style.display = 'none';
-    fillStats([
-      ['击杀数', state.kills],
-      ['抵达波次', state.wave],
-      ['本关金币', state.runCoins],
-      ['人物等级', 'Lv.' + state.player.level]
-    ]);
-    showScreen('gameOver');
-  }, 750);
+    document.getElementById('shopTitle').textContent = '休整 · 第 ' + LEVELS[state.levelIndex].id + ' 关';
+    document.getElementById('btnNextLevel').textContent = '再试本关';
+    renderShop();
+    showScreen('shop');
+  }, 500);
 }
 function levelCleared() {
   const L = LEVELS[state.levelIndex];
@@ -1855,6 +2238,7 @@ function levelCleared() {
   if (score > rec.score) rec.score = score;
   state.save.best[key] = rec;
   state.save.coins += state.runCoins;
+  writeSave();
   const isLast = state.levelIndex + 1 >= LEVELS.length;
   state.save.unlocked = isLast ? LEVELS.length : Math.max(state.save.unlocked, state.levelIndex + 2);
   writeSave();
@@ -1862,14 +2246,16 @@ function levelCleared() {
 
   if (isLast) {
     state.mode = 'victory';
+    drainLevelUpQueue();   // 全通关没有结算页，把没选的升级直接生效
+    closeLevelUp();
     document.getElementById('goTitle').textContent = '深 渊 已 净 化';
-    document.getElementById('goSub').textContent = '你已击溃全部六层守卫，成为真正的深渊猎手。';
+    document.getElementById('goSub').textContent = '你已击溃全部 ' + LEVELS.length + ' 层守卫，成为真正的深渊猎手。';
     document.getElementById('btnGoShop').style.display = 'none';
     fillStats([
       ['击杀数', state.kills],
       ['本关金币', state.runCoins],
       ['人物等级', 'Lv.' + state.player.level],
-      ['通关进度', '6 / 6']
+      ['通关进度', LEVELS.length + ' / ' + LEVELS.length]
     ]);
     showScreen('gameOver');
   } else {
@@ -1902,9 +2288,12 @@ document.getElementById('btnGoShop').onclick = () => openShop();
 document.getElementById('btnNextLevel').onclick = () => {
   const next = state.levelIndex + 1;
   if (next >= LEVELS.length) { state.mode = 'menu'; showScreen('menu'); return; }
+  if (state.btnRetryThisLevel) { state.btnRetryThisLevel = false; startLevel(state.levelIndex, { keepPlayer: true }); return; }
   startLevel(next, { keepPlayer: true });
 };
 document.getElementById('btnShopMenu').onclick = () => { state.mode = 'menu'; renderLevelSelect(); showScreen('menu'); };
+const _luAuto = document.getElementById('btnLuAuto');
+if (_luAuto) _luAuto.onclick = () => { audio(); autoPickLevelUps(); renderShop(); };
 
 /* ---------------- 主循环 ---------------- */
 let last = performance.now();

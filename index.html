@@ -124,6 +124,29 @@
   .sep { display:flex; align-items:center; gap:10px; color:#5f6b99; font-size:11px; letter-spacing:.2em; }
   .sep::before, .sep::after { content:""; flex:1; height:1px; background:#2a3157; }
   #dmgWrap { position:absolute; inset:0; pointer-events:none; z-index:9; }
+
+  /* ---------- 升级强化：只在通关结算时出现，战斗中不打扰 ---------- */
+  #luPanel {
+    display:flex; flex-direction:column; gap:10px; width:100%;
+    padding:14px 16px; border-radius:14px; text-align:left;
+    background:linear-gradient(160deg, rgba(46,54,104,.95), rgba(16,19,38,.96));
+    border:1px solid #6f86ff; box-shadow:0 10px 30px rgba(50,80,220,.28);
+    animation:luPop .24s ease-out;
+  }
+  #luPanel.hidden { display:none; }
+  @keyframes luPop { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  #luPanel .luHead { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  #luPanel .luHead b { font-size:16px; letter-spacing:.1em; color:#ffe066; }
+  #luPanel .luHead .tip { font-size:11px; color:#9fb0e8; letter-spacing:.04em; }
+  #luPanel .luHead .btn.tiny { margin-left:auto; }
+  #luPanel .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:10px; }
+  #luPanel .card { padding:11px 13px; border-radius:11px; }
+  #luPanel .card .h b { font-size:15px; color:#cfe0ff; }
+  #luPanel .card .d { font-size:12px; line-height:1.5; }
+  #luPanel .card .lvtag { display:none; }
+  #luPanel .card .cost { font-size:11px; }
+  .btn.tiny { padding:6px 12px; font-size:12px; border-radius:8px; box-shadow:none; }
+  #luPanel.luDone .cards { display:none; }
   .overlayMsg { font-size:12px; color:#ffb3c8; }
   /* ================= 触摸设备 / 移动端适配 ================= */
   .touch-only { display:none !important; }
@@ -226,6 +249,9 @@
     .statGrid { grid-template-columns:1fr 1fr; }
     .card, .lv { padding:13px 14px; }
     #luCards, #goStats { width:100% !important; }
+    #luPanel { padding:11px 12px; }
+    #luPanel .card { padding:10px 11px; }
+    #luPanel .cards { grid-template-columns:1fr; }
 
     /* HUD 自适应 */
     #hud {
@@ -264,15 +290,20 @@
     .tbtn .tn { display:none; }
     #bossBar { top:70px; width:min(520px, 70vw); }
   }
-  /* 横屏提示（竖屏手机时提示旋转） */
-  #rotateTip {
-    position:absolute; inset:0; z-index:60; display:none;
-    align-items:center; justify-content:center; flex-direction:column; gap:16px;
-    background:rgba(5,5,12,.97); text-align:center; padding:24px;
-  }
-  #rotateTip .ic { font-size:52px; animation:rot 2s ease-in-out infinite; }
-  @keyframes rot { 0%,40% { transform:rotate(0); } 70%,100% { transform:rotate(90deg); } }
-  #rotateTip.show { display:flex; }
+/* ================= 默认横屏 =================
+   1) 优先用 Screen Orientation API 锁定横屏；
+   2) 锁不了（如 iOS Safari）时，用 CSS 把 #wrap 整体旋转 90 度，
+      竖屏握持也直接得到横屏画面，不需要玩家自己切换方向。
+   注意 #wrap 设置了 --cx/--cy（逻辑视口中心偏移），保证旋转后画面居中。 */
+#wrap { transform-origin:0 0; }
+html.portrait-fallback, html.portrait-fallback body { overflow:hidden; }
+html.portrait-fallback #wrap {
+  position:fixed; left:0; top:0;
+  width:100vh; height:100vw;
+  transform:translateX(100vw) rotate(90deg);
+}
+/* 兜底旋转时隐藏原生竖屏方向下的横屏提示（已不再需要） */
+#rotateTip { display:none !important; }
 </style>
 </head>
 <body>
@@ -287,12 +318,14 @@
       <div class="bar"><i id="xpFill" style="width:0%"></i></div>
       <div class="bar-label" style="margin-top:8px"><span>闪避体力</span><span id="stTxt">1.0</span></div>
       <div class="bar"><i id="stFill" style="background:linear-gradient(90deg,#8ef0c0,#4bc7ff)"></i></div>
+      <div class="bar-label" style="margin-top:8px"><span>格挡</span><span id="blkTxt">3 / 3</span></div>
+      <div class="bar"><i id="blkFill" style="width:100%;background:linear-gradient(90deg,#7fe6ff,#6f8cff)"></i></div>
     </div>
 
     <div id="topRight">
       <div>第 <b id="lvNum">1</b> 关</div>
       <div>金币 <b id="coinNum">0</b></div>
-      <div id="hintKeys">WASD 移动 · 空格/左键 攻击 · Shift 闪避</div>
+      <div id="hintKeys">WASD 移动 · 空格/左键 攻击（按住=回旋斩） · Shift 闪避</div>
     </div>
 
     <div id="bossBar"><div class="nm" id="bossName">BOSS</div><div class="bar"><i id="bossFill"></i></div></div>
@@ -304,7 +337,7 @@
     <div id="skillBar">
       <div class="skill ready" id="sk0"><div class="k">Q</div><div class="n">斩击</div><div class="cd" style="display:none"></div></div>
       <div class="skill ready" id="sk1"><div class="k">E</div><div class="n">旋风</div><div class="cd" style="display:none"></div></div>
-      <div class="skill ready" id="sk2"><div class="k">R</div><div class="n">冲击波</div><div class="cd" style="display:none"></div></div>
+      <div class="skill ready" id="sk2"><div class="k">R</div><div class="n">追猎</div><div class="cd" style="display:none"></div></div>
     </div>
   </div>
 
@@ -315,16 +348,9 @@
   <div id="touchBtns">
     <div class="tbtn" id="tbQ"><div class="tk">Q</div><div class="tn">斩击</div><div class="tcd"></div></div>
     <div class="tbtn" id="tbE"><div class="tk">E</div><div class="tn">旋风</div><div class="tcd"></div></div>
-    <div class="tbtn" id="tbR"><div class="tk">R</div><div class="tn">冲击波</div><div class="tcd"></div></div>
+    <div class="tbtn" id="tbR"><div class="tk">R</div><div class="tn">追猎</div><div class="tcd"></div></div>
     <div class="tbtn" id="tbDash"><div class="tk">⚡</div><div class="tn">闪避</div><div class="tcd"></div></div>
     <div class="tbtn" id="tbPause"><div class="tk">❚❚</div></div>
-  </div>
-
-  <!-- 竖屏提示 -->
-  <div id="rotateTip">
-    <div class="ic">📱</div>
-    <h2>请横屏游玩</h2>
-    <p class="hint">本作为横版清怪游戏，横向握持操作更顺手。</p>
   </div>
 
   <!-- 主菜单 -->
@@ -332,13 +358,13 @@
     <div class="sub">SINGLE PLAYER · ROGUE-LITE</div>
     <h1>深渊猎手</h1>
     <p class="hint">
-      深入六层深渊，逐层击溃守卫。每一关都有全新的怪物、地形与首领。<br>
-      击败怪物获得金币与经验，升级后可选强化；通关后进入商店囤积战力。<br>
+      深入十层深渊，逐层击溃守卫。每一关都有全新的怪物、地形与首领。<br>
+      击败怪物获得金币与经验，升级后不打断战斗；通关结算时再一次性选完强化。<br>
       <b style="color:#c8d4ff" class="kbd-pc">操作：</b>
       <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> 移动 ·
-      <kbd>空格</kbd> 攻击 ·
+      <kbd>空格</kbd> / 左键 攻击（<b style="color:#ffd479">按住不放 = 回旋斩，伤害覆盖身周一整圈</b>） ·
       <kbd>Shift</kbd> 闪避（无敌） ·
-      <kbd>Q</kbd><kbd>E</kbd><kbd>R</kbd> 技能 ·
+      <kbd>Q</kbd><kbd>E</kbd><kbd>R</kbd> 技能（<b style="color:#9fe8ff">R = 追猎，点一下自动命中全场所有怪物</b>） ·
       <kbd>P</kbd> 暂停<br>
       <b class="touch-only" style="color:#c8d4ff">移动端：左侧拖动移动 · 右侧按钮释放技能与闪避</b>
     </p>
@@ -358,18 +384,21 @@
     <div class="row"><button class="btn ghost" id="btnBackMenu">返 回</button></div>
   </div>
 
-  <!-- 升级选择 -->
-  <div class="screen hidden" id="levelUp">
-    <h2 id="luTitle">等级提升</h2>
-    <div class="sub">选择一项强化</div>
-    <div class="cards" id="luCards" style="width:min(860px,94vw)"></div>
-  </div>
 
   <!-- 商店 -->
   <div class="screen hidden" id="shop">
     <h2 id="shopTitle">补给站</h2>
     <div id="coinLine"></div>
     <div class="shopWrap">
+      <!-- 通关结算：本关累积的升级在这里一次性选择 -->
+      <div id="luPanel" class="hidden">
+        <div class="luHead">
+          <b id="luTitle">升 级 强 化</b>
+          <span class="tip" id="luTip">本关攒下的升级在这里一次性选完</span>
+          <button class="btn tiny" id="btnLuAuto">全部随机</button>
+        </div>
+        <div class="cards" id="luCards"></div>
+      </div>
       <div class="statGrid" id="statGrid"></div>
       <div class="sep">强 化</div>
       <div class="cards" id="shopCards"></div>
